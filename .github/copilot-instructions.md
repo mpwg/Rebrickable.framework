@@ -17,12 +17,12 @@
 **CRITICAL:** This project requires Xcode and macOS environment. It cannot be built on Linux or other platforms.
 
 ### Prerequisites
-- **Xcode 14.0+** (supports modern project format, deployment targets iOS 16.0+)
+- **Xcode 16.0+** (uses objectVersion 77 project format, deployment targets require iOS 26.0+)
 - **macOS 14.0+** 
 - **Swift 6.1.2+**
 - Internet connection (for Swift Package Manager dependencies)
 
-**⚠️ Note:** The project is configured with current deployment targets (iOS 16.0, macOS 13.0, xrOS 1.0) which should work with Xcode 14+ and modern CI environments.
+**⚠️ Note:** The project is configured with very recent deployment targets (iOS 26.0, macOS 26.0) which may require Xcode 16 beta. If building fails due to deployment target issues, these may need adjustment in the project settings.
 
 ### Build Instructions
 
@@ -49,7 +49,7 @@
    ```
 
 **Platform Support:**
-- iOS 16.0+ / macOS 13.0+ / xrOS 1.0+ (standard deployment targets)
+- iOS 26.0+ / macOS 26.0+ / xrOS 26.0+ (requires latest Xcode/OS versions)
 - Universal framework: iPhone, iPad, Mac, Vision Pro
 
 **Common Build Issues:**
@@ -57,7 +57,7 @@
 - **Package resolution fails:** Clean derived data and restart Xcode
 - **"Command not found: xcodebuild":** Ensure Xcode Command Line Tools are installed: `xcode-select --install`
 - **Scheme not found:** Use `xcodebuild -list` to see available schemes
-- **Deployment target compatibility**: Standard deployment targets (iOS 16.0+, macOS 13.0+, xrOS 1.0+)
+- **Deployment target errors:** Requires very recent OS versions (26.0+) - may need Xcode beta
 
 ### Testing
 
