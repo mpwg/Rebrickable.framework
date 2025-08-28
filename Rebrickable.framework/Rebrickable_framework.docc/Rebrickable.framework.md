@@ -30,4 +30,4 @@ let legoApi = LegoAPI(apiKey: "<YOUR_API_KEY>")
 ```
 
 ## License
-RebrickableSDK is licensed under the MIT License. See the LICENSE file for more information.
+RebrickableSDK is licensed under the AGPL3 License. See the LICENSE file for more information.
