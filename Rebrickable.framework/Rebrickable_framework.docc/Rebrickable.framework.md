@@ -1,10 +1,13 @@
-# ``Rebrickable.framework``
+# ``Rebrickable_framework``
 
 <!--@START_MENU_TOKEN@-->Summary<!--@END_MENU_TOKEN@-->
 
 ## **Rebrickable.framework** is a framework that uses [Rebrickable APIs](https://rebrickable.com/api/v3/docs/?key=5d31bd9f6fe3ad39cbcc573bd64bada1) to build their own apps that want to use the Rebrickable database.
 
 <!--@START_MENU_TOKEN@-->Text<!--@END_MENU_TOKEN@-->
+## Thanks
+Thank you https://github.com/renTramontano/RebrickableSDK for the implementation of the SDK. I just converted it to a framework.
+
 ## Getting Started
 ### Installation with Swift Package Manager
 Add the following to your **Package.swift**
