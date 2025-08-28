@@ -21,9 +21,18 @@ public struct LegoSet: Codable, Hashable {
     public let set_url: URL?
     /// Timestamp of when the set data was last modified.
     public let last_modified_dt: String
-    
+
     /// Initializes a new LegoSet.
-    public init(set_num: String, name: String, year: Int?, theme_id: Int?, num_parts: Int, set_img_url: URL?, set_url: URL?, last_modified_dt: String) {
+    public init(
+        set_num: String,
+        name: String,
+        year: Int?,
+        theme_id: Int?,
+        num_parts: Int,
+        set_img_url: URL?,
+        set_url: URL?,
+        last_modified_dt: String
+    ) {
         self.set_num = set_num
         self.name = name
         self.year = year

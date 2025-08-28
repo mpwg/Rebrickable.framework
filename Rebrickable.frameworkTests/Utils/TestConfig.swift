@@ -8,7 +8,7 @@ enum TestConfig {
         if let envKey = ProcessInfo.processInfo.environment["REBRICKABLE_TEST_API_KEY"] {
             return envKey
         }
-        
+
         // Fallback to a safe test placeholder that won't work with real API
         // but allows tests to run with mocked responses
         return "test-api-key-placeholder-for-mocked-tests"

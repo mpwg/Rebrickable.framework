@@ -1,7 +1,7 @@
-@testable import Rebrickable_framework
-import XCTest
-import Swifter
 import Combine
+import Swifter
+import XCTest
+@testable import Rebrickable_framework
 
 class LegoAPIErrorTests: UnitTestCase {
     private let legoApi = LegoAPI(apiKey: TestConfig.testApiKey)
@@ -11,19 +11,24 @@ class LegoAPIErrorTests: UnitTestCase {
         // GIVEN
         try httpServerBuilder
 
-            .route("/colors", { (request, callCount) -> (HttpResponse) in
+            .route("/colors") { request, callCount -> (HttpResponse) in
                 XCTAssertEqual(request.method, APIManager.HttpMethod.get.rawValue)
                 XCTAssertEqual(callCount, 1)
-                let errorBody = ErrorBody(code: "error qualcosa", details: [ErrorBody.ErrorDetail.init(id: "qualcosa id", description: "")])
+                let errorBody = ErrorBody(
+                    code: "error qualcosa",
+                    details: [ErrorBody.ErrorDetail(id: "qualcosa id", description: "")]
+                )
                 return HttpResponse.encode(errorBody, statusCode: 429)
-            })
+            }
             .buildAndStart()
         // WHEN
         cancellable = legoApi.getColors()
             // THEN
             .print()
-            .sink(receiveCompletion: { print($0) },
-                  receiveValue: { print($0) })
+            .sink(
+                receiveCompletion: { print($0) },
+                receiveValue: { print($0) }
+            )
     }
 }
 

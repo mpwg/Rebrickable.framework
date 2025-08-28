@@ -1,5 +1,5 @@
-import Foundation
 import Combine
+import Foundation
 
 /// A manager for handling HTTP requests to the Rebrickable API.
 ///
@@ -16,13 +16,19 @@ final class APIManager {
     }
 
     /// Creates and executes an HTTP request to the specified URL.
-    /// 
+    ///
     /// - Parameters:
     ///   - url: The URL to send the request to.
     ///   - parameters: Optional HTTP body parameters as key-value pairs.
     ///   - httpMethod: The HTTP method to use for the request.
     /// - Returns: A publisher that emits the data task result or an error.
-    public func makeRequest(to url: URL, httpBody parameters: [String: String] = [:], withHttpMethod httpMethod: HttpMethod) -> URLSession.DataTaskPublisher {
+    func makeRequest(
+        to url: URL,
+        httpBody parameters: [String: String] = [:],
+        withHttpMethod httpMethod: HttpMethod
+    )
+        -> URLSession.DataTaskPublisher
+    {
         let urlRequest = prepareRequest(with: url, parameters: parameters, httpMethod: httpMethod)
         return URLSession.shared.dataTaskPublisher(for: urlRequest)
     }
@@ -44,47 +50,53 @@ final class APIManager {
 
 extension APIManager {
     /// Fetches a single item from the API and decodes it to the specified type.
-    /// 
+    ///
     /// - Parameter url: The URL to fetch the item from.
     /// - Returns: A publisher that emits the decoded item or a LegoError.
     func getItem<T: Codable>(with url: URL) -> AnyPublisher<T, LegoError> {
         makeRequest(to: url, withHttpMethod: .get)
-            .map { $0.data }
+            .map(\.data)
             .decode(type: T.self, decoder: JSONDecoder())
             .mapToLegoError()
             .eraseToAnyPublisher()
     }
 
     /// Fetches a paginated list of results from the API.
-    /// 
+    ///
     /// - Parameter url: The URL to fetch the results from.
     /// - Returns: A publisher that emits an array of decoded results or a LegoError.
     func getResults<T: Codable & Hashable>(with url: URL) -> AnyPublisher<[T], LegoError> {
         let pageResponse: AnyPublisher<PageResponse<T>, LegoError> = getItem(with: url)
         return pageResponse
-            .map { $0.results }
+            .map(\.results)
             .eraseToAnyPublisher()
     }
 
     /// Makes a generic request and decodes the response to the specified type.
-    /// 
+    ///
     /// - Parameters:
     ///   - url: The URL to send the request to.
     ///   - parameters: Optional HTTP body parameters as key-value pairs.
     ///   - httpMethod: The HTTP method to use for the request.
     /// - Returns: A publisher that emits the decoded response or a LegoError.
-    public func request<T: Codable & Hashable>(to url: URL, httpBody parameters: [String: String] = [:], withHttpMethod httpMethod: HttpMethod) -> AnyPublisher<T, LegoError> {
-    makeRequest(to: url, httpBody: parameters, withHttpMethod: httpMethod)
-        .map { $0.data }
-        .decode(type: T.self, decoder: JSONDecoder())
-        .mapToLegoError()
-        .eraseToAnyPublisher()
+    func request<T: Codable & Hashable>(
+        to url: URL,
+        httpBody parameters: [String: String] = [:],
+        withHttpMethod httpMethod: HttpMethod
+    )
+        -> AnyPublisher<T, LegoError>
+    {
+        makeRequest(to: url, httpBody: parameters, withHttpMethod: httpMethod)
+            .map(\.data)
+            .decode(type: T.self, decoder: JSONDecoder())
+            .mapToLegoError()
+            .eraseToAnyPublisher()
     }
 }
 
 extension APIManager {
     /// HTTP methods supported by the API manager.
-    public enum HttpMethod: String {
+    enum HttpMethod: String {
         case get = "GET"
         case post = "POST"
         case put = "PUT"

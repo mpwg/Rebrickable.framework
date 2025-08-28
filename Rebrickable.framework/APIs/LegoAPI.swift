@@ -1,5 +1,5 @@
-import Foundation
 import Combine
+import Foundation
 
 /// A client for accessing the Rebrickable API to retrieve LEGO-related data.
 ///
@@ -16,7 +16,7 @@ public final class LegoAPI {
     }
 
     /// Fetches a list of LEGO colors.
-    /// 
+    ///
     /// - Parameters:
     ///   - page: The page number for pagination (optional).
     ///   - pageSize: The number of items per page (optional).
@@ -26,7 +26,7 @@ public final class LegoAPI {
     }
 
     /// Fetches details for a specific LEGO color.
-    /// 
+    ///
     /// - Parameter id: The unique identifier of the color.
     /// - Returns: A publisher that emits a LegoColor object or a LegoError.
     public func getColorDetails(with id: Int) -> AnyPublisher<LegoColor, LegoError> {
@@ -37,15 +37,33 @@ public final class LegoAPI {
         apiManager.getItem(with: Endpoint.element(with: id))
     }
 
-    public func getMinifigures(inSetNum: String? = nil, inThemeId: String? = nil, page: Int? = nil, pageSize: Int? = nil) -> AnyPublisher<[LegoSet], LegoError> {
-        apiManager.getResults(with: Endpoint.minifigs(inSetNum: inSetNum, inThemeId: inThemeId, page: page, pageSize: pageSize))
+    public func getMinifigures(
+        inSetNum: String? = nil,
+        inThemeId: String? = nil,
+        page: Int? = nil,
+        pageSize: Int? = nil
+    )
+        -> AnyPublisher<[LegoSet], LegoError>
+    {
+        apiManager.getResults(with: Endpoint.minifigs(
+            inSetNum: inSetNum,
+            inThemeId: inThemeId,
+            page: page,
+            pageSize: pageSize
+        ))
     }
 
     public func getMinifigureDetails(figNum: String) -> AnyPublisher<LegoSet, LegoError> {
         apiManager.getItem(with: Endpoint.minifig(with: figNum))
     }
 
-    public func getMinifigureParts(figNum: String, page: Int? = nil, pageSize: Int? = nil) -> AnyPublisher<[LegoInventoryPart], LegoError> {
+    public func getMinifigureParts(
+        figNum: String,
+        page: Int? = nil,
+        pageSize: Int? = nil
+    )
+        -> AnyPublisher<[LegoInventoryPart], LegoError>
+    {
         apiManager.getResults(with: Endpoint.minifigParts(figNum: figNum, page: page, pageSize: pageSize))
     }
 
@@ -53,7 +71,12 @@ public final class LegoAPI {
         apiManager.getResults(with: Endpoint.minifigSets(figNum: figNum, page: page, pageSize: pageSize))
     }
 
-    public func getPartCategories(page: Int? = nil, pageSize: Int? = nil) -> AnyPublisher<[LegoPartCategory], LegoError> {
+    public func getPartCategories(
+        page: Int? = nil,
+        pageSize: Int? = nil
+    )
+        -> AnyPublisher<[LegoPartCategory], LegoError>
+    {
         apiManager.getResults(with: Endpoint.partCategories(page: page, pageSize: pageSize))
     }
 
@@ -69,15 +92,34 @@ public final class LegoAPI {
         apiManager.getItem(with: Endpoint.part(with: id))
     }
 
-    public func getPartColors(partNum: String, page: Int? = nil, pageSize: Int? = nil) -> AnyPublisher<[LegoPartColor], LegoError> {
+    public func getPartColors(
+        partNum: String,
+        page: Int? = nil,
+        pageSize: Int? = nil
+    )
+        -> AnyPublisher<[LegoPartColor], LegoError>
+    {
         apiManager.getResults(with: Endpoint.partColors(partNum: partNum, page: page, pageSize: pageSize))
     }
 
-    public func getSets(partNum: String, colorID: String, page: Int? = nil, pageSize: Int? = nil) -> AnyPublisher<[LegoSet], LegoError> {
+    public func getSets(
+        partNum: String,
+        colorID: String,
+        page: Int? = nil,
+        pageSize: Int? = nil
+    )
+        -> AnyPublisher<[LegoSet], LegoError>
+    {
         apiManager.getResults(with: Endpoint.set(partNum: partNum, colorId: colorID, page: page, pageSize: pageSize))
     }
 
-    public func getSets(themeId: String? = nil, page: Int? = nil, pageSize: Int? = nil) -> AnyPublisher<[LegoSet], LegoError> {
+    public func getSets(
+        themeId: String? = nil,
+        page: Int? = nil,
+        pageSize: Int? = nil
+    )
+        -> AnyPublisher<[LegoSet], LegoError>
+    {
         apiManager.getResults(with: Endpoint.sets(themeId: themeId, page: page, pageSize: pageSize))
     }
 
@@ -85,11 +127,23 @@ public final class LegoAPI {
         apiManager.getItem(with: Endpoint.set(setNum: setNum))
     }
 
-    public func getInventoryMinifigs(setNum: String, page: Int? = nil, pageSize: Int? = nil) -> AnyPublisher<[LegoInventorySet], LegoError> {
+    public func getInventoryMinifigs(
+        setNum: String,
+        page: Int? = nil,
+        pageSize: Int? = nil
+    )
+        -> AnyPublisher<[LegoInventorySet], LegoError>
+    {
         apiManager.getResults(with: Endpoint.inventoryMinifigs(setNum: setNum, page: page, pageSize: pageSize))
     }
 
-    public func getInventoryParts(setNum: String, page: Int? = nil, pageSize: Int? = nil) -> AnyPublisher<[LegoInventoryPart], LegoError> {
+    public func getInventoryParts(
+        setNum: String,
+        page: Int? = nil,
+        pageSize: Int? = nil
+    )
+        -> AnyPublisher<[LegoInventoryPart], LegoError>
+    {
         apiManager.getResults(with: Endpoint.inventoryParts(setNum: setNum, page: page, pageSize: pageSize))
     }
 

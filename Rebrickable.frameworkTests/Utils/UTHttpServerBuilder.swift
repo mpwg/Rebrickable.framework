@@ -3,10 +3,15 @@ import Swifter
 import XCTest
 
 public class UTHttpServerBuilder {
-    public private(set) var httpServer: HttpServer = HttpServer()
+    public private(set) var httpServer = HttpServer()
     public var httpRoutes: [Route] = []
 
-    public func route(_ endpoint: String, _ completion: @escaping (HttpRequest, Int) -> (HttpResponse)) -> UTHttpServerBuilder {
+    public func route(
+        _ endpoint: String,
+        _ completion: @escaping (HttpRequest, Int) -> (HttpResponse)
+    )
+        -> UTHttpServerBuilder
+    {
         let lock = DispatchSemaphore(value: 1)
         var callCount = 0
         httpServer.self[endpoint] = { request in
@@ -29,8 +34,14 @@ public class UTHttpServerBuilder {
     }
 
     @discardableResult
-    public func buildAndStart(port: in_port_t = 8080, forceIPv4: Bool = false, priority: DispatchQoS.QoSClass = .userInteractive) throws -> HttpServer {
-        httpRoutes.forEach { (route) in
+    public func buildAndStart(
+        port: in_port_t = 8080,
+        forceIPv4: Bool = false,
+        priority: DispatchQoS.QoSClass = .userInteractive
+    ) throws
+        -> HttpServer
+    {
+        for route in httpRoutes {
             buildRoute(endpoint: route.enpoint, completion: route.completion)
         }
         try httpServer.start(port, forceIPv4: forceIPv4, priority: priority)
