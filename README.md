@@ -4,7 +4,7 @@
 [![Security](https://github.com/mpwg/Rebrickable.framework/actions/workflows/security.yml/badge.svg)](https://github.com/mpwg/Rebrickable.framework/actions/workflows/security.yml)
 [![Documentation](https://github.com/mpwg/Rebrickable.framework/actions/workflows/documentation.yml/badge.svg)](https://github.com/mpwg/Rebrickable.framework/actions/workflows/documentation.yml)
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
-[![Swift 5.9](https://img.shields.io/badge/Swift-5.9-orange.svg)](https://swift.org)
+[![Swift 6.1.2](https://img.shields.io/badge/Swift-6.1.2-orange.svg)](https://swift.org)
 [![Platform](https://img.shields.io/badge/platform-iOS%20%7C%20macOS-lightgrey.svg)](https://developer.apple.com)
 
 **Rebrickable.framework** is a Swift framework that provides an easy-to-use wrapper around the [Rebrickable APIs](https://rebrickable.com/api/v3/docs/) for building LEGO-related applications. Access the comprehensive Rebrickable database of LEGO sets, parts, colors, and user inventory data.
