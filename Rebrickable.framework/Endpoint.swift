@@ -1,5 +1,9 @@
 import Foundation
 
+/// URL construction utilities for the Rebrickable API endpoints.
+///
+/// This struct provides static methods and constants for building URLs to access
+/// various endpoints of the Rebrickable API, including colors, parts, sets, themes, and user data.
 struct Endpoint {
     static let scheme = "https://"
     static let rebrickableHostName = "rebrickable.com"

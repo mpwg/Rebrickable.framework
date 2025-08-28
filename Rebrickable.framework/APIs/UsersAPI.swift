@@ -1,18 +1,27 @@
 import Foundation
 import Combine
 
+/// A client for accessing user-specific data from the Rebrickable API.
+///
+/// This class provides methods to authenticate users and access their personal LEGO data,
+/// including parts collections, builds, and lost parts tracking.
 public final class UsersAPI {
-    private var apiManger: APIManager
+    /// The API manager responsible for handling HTTP requests.
+    private var apiManager: APIManager
+    /// The user's authentication token for accessing personal data.
     private var userToken: String?
+    /// Storage for Combine cancellables.
     private var bag = Set<AnyCancellable>()
 
+    /// Initializes a new UsersAPI client with the provided API key.
+    /// - Parameter apiKey: The API key for authenticating with the Rebrickable API.
     public init(apiKey: String) {
-        apiManger = APIManager(apiKey: apiKey)
+        apiManager = APIManager(apiKey: apiKey)
     }
 
     public func userAuthentication(username: String, password: String) {
         let httpBodyParameters = ["username": username, "password": password]
-        apiManger.makeRequest(to: Endpoint.tokenUrl, httpBody: httpBodyParameters, withHttpMethod: .post)
+        apiManager.makeRequest(to: Endpoint.tokenUrl, httpBody: httpBodyParameters, withHttpMethod: .post)
             .map { $0.data }
             .decode(type: String.self, decoder: JSONDecoder())
             .mapToLegoError()
@@ -23,7 +32,7 @@ public final class UsersAPI {
 
     public func userAuthentication2(username: String, password: String) {
         let httpBodyParameters = ["username": username, "password": password]
-        let response: AnyPublisher<String, LegoError> = apiManger.request(to: Endpoint.tokenUrl, httpBody: httpBodyParameters, withHttpMethod: .post)
+        let response: AnyPublisher<String, LegoError> = apiManager.request(to: Endpoint.tokenUrl, httpBody: httpBodyParameters, withHttpMethod: .post)
         response
             .assertNoFailure()
             .receive(on: RunLoop.main)
@@ -32,14 +41,14 @@ public final class UsersAPI {
     }
 
     public func getAllParts(page: Int? = nil, pageSize: Int? = nil) -> AnyPublisher<[LegoUserPart], LegoError> {
-        apiManger.getResults(with: Endpoint.allParts(token: userToken ?? "", page: page, pageSize: pageSize))
+        apiManager.getResults(with: Endpoint.allParts(token: userToken ?? "", page: page, pageSize: pageSize))
     }
 
     public func getBuild(setNum: String) -> AnyPublisher<LegoBuild, LegoError> {
-        apiManger.getItem(with: Endpoint.build(token: userToken ?? "", setNum: setNum))
+        apiManager.getItem(with: Endpoint.build(token: userToken ?? "", setNum: setNum))
     }
 
     public func getLostParts(page: Int? = nil, pageSize: Int? = nil) -> AnyPublisher<[LegoLostPart], LegoError> {
-        apiManger.getResults(with: Endpoint.lostParts(token: userToken ?? "", page: page, pageSize: pageSize))
+        apiManager.getResults(with: Endpoint.lostParts(token: userToken ?? "", page: page, pageSize: pageSize))
     }
 }
