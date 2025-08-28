@@ -43,7 +43,7 @@ jobs:
         xcodebuild clean build \
           -project Rebrickable.framework.xcodeproj \
           -scheme "Rebrickable.framework" \
-          -destination "platform=iOS Simulator,OS=26.0,name=iPhone 15 Pro" \
+          -destination "platform=iOS Simulator,OS=17.5,name=iPhone 15 Pro" \
           -configuration Debug \
           CODE_SIGN_IDENTITY="" \
           CODE_SIGNING_REQUIRED=NO

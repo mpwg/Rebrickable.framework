@@ -99,7 +99,7 @@ jobs:
         xcodebuild docbuild \
           -project Rebrickable.framework.xcodeproj \
           -scheme "Rebrickable.framework" \
-          -destination "platform=iOS Simulator,OS=26.0,name=iPhone 15 Pro" \
+          -destination "platform=iOS Simulator,OS=17.5,name=iPhone 15 Pro" \
           -derivedDataPath ./DerivedData 2>&1 | tee doc-coverage.txt
           
     - name: Upload Documentation Coverage
