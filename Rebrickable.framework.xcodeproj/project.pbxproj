@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		40CC59162E60AF0F00A89781 /* Rebrickable_framework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40CC590A2E60AF0E00A89781 /* Rebrickable_framework.framework */; };
+		40CC595F2E60B27400A89781 /* Swifter in Frameworks */ = {isa = PBXBuildFile; productRef = 40CC595E2E60B27400A89781 /* Swifter */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				40CC59162E60AF0F00A89781 /* Rebrickable_framework.framework in Frameworks */,
+				40CC595F2E60B27400A89781 /* Swifter in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -129,6 +131,7 @@
 			);
 			name = Rebrickable.frameworkTests;
 			packageProductDependencies = (
+				40CC595E2E60B27400A89781 /* Swifter */,
 			);
 			productName = Rebrickable.frameworkTests;
 			productReference = 40CC59152E60AF0F00A89781 /* Rebrickable.frameworkTests.xctest */;
@@ -161,6 +164,9 @@
 			);
 			mainGroup = 40CC59002E60AF0E00A89781;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				40CC595D2E60B27400A89781 /* XCRemoteSwiftPackageReference "swifter" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 40CC590B2E60AF0E00A89781 /* Products */;
 			projectDirPath = "";
@@ -376,7 +382,7 @@
 				SWIFT_INSTALL_MODULE = YES;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
 				XROS_DEPLOYMENT_TARGET = 26.0;
 			};
@@ -421,7 +427,7 @@
 				SWIFT_INSTALL_MODULE = YES;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
 				XROS_DEPLOYMENT_TARGET = 26.0;
 			};
@@ -508,6 +514,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		40CC595D2E60B27400A89781 /* XCRemoteSwiftPackageReference "swifter" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/httpswift/swifter";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.5.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		40CC595E2E60B27400A89781 /* Swifter */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 40CC595D2E60B27400A89781 /* XCRemoteSwiftPackageReference "swifter" */;
+			productName = Swifter;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 40CC59012E60AF0E00A89781 /* Project object */;
 }
