@@ -1,0 +1,68 @@
+# SwiftFormat Configuration for Rebrickable.framework
+
+# File paths to format
+--include Rebrickable.framework,Rebrickable.frameworkTests
+
+# File paths to exclude from formatting
+--exclude .build,DerivedData,Carthage,Pods,.git,vendor
+
+# Swift version
+--swiftversion 5.9
+
+# Indentation
+--indent 4
+--tabwidth 4
+--smarttabs enabled
+
+# Line wrapping
+--maxwidth 120
+--wraparguments before-first
+--wrapparameters before-first
+--wrapcollections before-first
+--wrapreturntype if-multiline
+--wrapconditions before-first
+
+# Spacing
+--trimwhitespace always
+--insertlines enabled
+--removelines enabled
+
+# Rules to enable
+--enable isEmpty
+--enable redundantSelf
+--enable sortedImports
+--enable duplicateImports
+--enable unusedArguments
+--enable hoistPatternLet
+--enable wrapMultilineStatementBraces
+--enable blankLinesAtStartOfScope
+--enable blankLinesAtEndOfScope
+--enable blankLinesBetweenScopes
+--enable consecutiveBlankLines
+--enable consecutiveSpaces
+
+# Rules to disable
+--disable andOperator # Keep && instead of converting to and
+--disable organizeDeclarations # Can be too aggressive
+
+# Options
+--self remove # Remove explicit self where not needed
+--importgrouping testable-bottom # Group imports with testable at bottom
+--patternlet inline # Use inline let in pattern matching
+--commas always # Always use trailing commas in collections
+--semicolons never # Never use semicolons
+--ranges spaced # Use spaced ranges (1 ... 10)
+--empty void # Use Void instead of ()
+--stripunusedargs closure-only # Strip unused closure arguments only
+--acronyms ID,URL,API,HTTP,JSON,XML,PDF
+--beforemarks 
+--aftermarks 
+--linebreaks lf # Use LF line endings
+--elseposition same-line # Keep else on same line as }
+--guardelse same-line # Keep else on same line for guard statements
+--indent-case false # Don't indent case statements
+--ifdef no-indent # Don't indent #if blocks
+--redundanttype inferred # Remove redundant type annotations
+--closingparen balanced # Balance closing parentheses
+--hexliteralcase lowercase # Use lowercase hex literals
+--exponentcase lowercase # Use lowercase exponent case

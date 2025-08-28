@@ -1,0 +1,124 @@
+name: Documentation
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build-docs:
+    name: Build Documentation
+    runs-on: macos-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    - name: Setup Xcode
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: latest-stable
+      
+    - name: Setup Pages
+      uses: actions/configure-pages@v4
+      
+    - name: Clean DerivedData
+      run: rm -rf ~/Library/Developer/Xcode/DerivedData
+      
+    - name: Build Documentation
+      run: |
+        # Build the framework first
+        xcodebuild clean build \
+          -project Rebrickable.framework.xcodeproj \
+          -scheme "Rebrickable.framework" \
+          -destination "platform=iOS Simulator,OS=26.0,name=iPhone 15 Pro" \
+          -configuration Release \
+          CODE_SIGN_IDENTITY="" \
+          CODE_SIGNING_REQUIRED=NO
+          
+        # Generate documentation
+        xcodebuild docbuild \
+          -project Rebrickable.framework.xcodeproj \
+          -scheme "Rebrickable.framework" \
+          -destination "platform=iOS Simulator,OS=26.0,name=iPhone 15 Pro" \
+          -derivedDataPath ./DerivedData
+          
+    - name: Process Documentation
+      run: |
+        # Find the documentation archive
+        ARCHIVE_PATH=$(find ./DerivedData -name "*.doccarchive" | head -1)
+        
+        if [ -n "$ARCHIVE_PATH" ]; then
+          echo "Found documentation archive at: $ARCHIVE_PATH"
+          
+          # Create docs directory
+          mkdir -p _site
+          
+          # Copy documentation content
+          cp -R "$ARCHIVE_PATH"/* _site/
+          
+          # Create index.html if it doesn't exist
+          if [ ! -f "_site/index.html" ]; then
+            cat > _site/index.html << 'EOF'
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Rebrickable.framework Documentation</title>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <style>
+                body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; margin: 40px; }
+                h1 { color: #333; }
+                .description { color: #666; margin-bottom: 30px; }
+                .links a { display: inline-block; margin-right: 20px; padding: 10px 20px; background: #007AFF; color: white; text-decoration: none; border-radius: 6px; }
+                .links a:hover { background: #005BBB; }
+            </style>
+        </head>
+        <body>
+            <h1>Rebrickable.framework</h1>
+            <div class="description">
+                A Swift framework that provides an easy-to-use wrapper around the Rebrickable APIs for building LEGO-related applications.
+            </div>
+            <div class="links">
+                <a href="./documentation/rebrickable_framework/">Framework Documentation</a>
+                <a href="https://github.com/mpwg/Rebrickable.framework">GitHub Repository</a>
+                <a href="https://rebrickable.com/api/v3/docs/">Rebrickable API Docs</a>
+            </div>
+        </body>
+        </html>
+        EOF
+          fi
+          
+          echo "Documentation processed successfully"
+          ls -la _site/
+        else
+          echo "No documentation archive found"
+          exit 1
+        fi
+        
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: ./_site
+
+  deploy:
+    name: Deploy Documentation
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build-docs
+    
+    steps:
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4

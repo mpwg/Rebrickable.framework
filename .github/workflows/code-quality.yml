@@ -1,0 +1,171 @@
+name: Code Quality
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    - cron: '0 2 * * 1'  # Weekly on Monday at 2 AM
+
+jobs:
+  swiftlint:
+    name: SwiftLint
+    runs-on: macos-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    - name: Install SwiftLint
+      run: brew install swiftlint
+      
+    - name: Run SwiftLint
+      run: |
+        swiftlint lint --reporter github-actions-logging > swiftlint-results.txt || true
+        swiftlint lint --reporter json > swiftlint-results.json || true
+        
+    - name: Upload SwiftLint Results
+      uses: actions/upload-artifact@v4
+      with:
+        name: swiftlint-results
+        path: |
+          swiftlint-results.txt
+          swiftlint-results.json
+        retention-days: 30
+
+  swiftformat:
+    name: SwiftFormat
+    runs-on: macos-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    - name: Install SwiftFormat
+      run: brew install swiftformat
+      
+    - name: Check SwiftFormat
+      run: |
+        swiftformat --lint . > swiftformat-results.txt 2>&1 || true
+        echo "SwiftFormat check completed"
+        
+    - name: Upload SwiftFormat Results
+      uses: actions/upload-artifact@v4
+      with:
+        name: swiftformat-results
+        path: swiftformat-results.txt
+        retention-days: 30
+
+  complexity-analysis:
+    name: Complexity Analysis
+    runs-on: macos-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    - name: Install Lizard
+      run: pip3 install lizard
+      
+    - name: Run Complexity Analysis
+      run: |
+        lizard -l swift -x "*/.*" -x "*Tests*" -x "*Test*" . > complexity-results.txt 2>&1 || true
+        echo "Complexity analysis completed"
+        
+    - name: Upload Complexity Results
+      uses: actions/upload-artifact@v4
+      with:
+        name: complexity-results
+        path: complexity-results.txt
+        retention-days: 30
+
+  documentation-coverage:
+    name: Documentation Coverage
+    runs-on: macos-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    - name: Setup Xcode
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: latest-stable
+      
+    - name: Check Documentation Coverage
+      run: |
+        # Build documentation and check for warnings
+        xcodebuild docbuild \
+          -project Rebrickable.framework.xcodeproj \
+          -scheme "Rebrickable.framework" \
+          -destination "platform=iOS Simulator,OS=26.0,name=iPhone 15 Pro" \
+          -derivedDataPath ./DerivedData 2>&1 | tee doc-coverage.txt
+          
+    - name: Upload Documentation Coverage
+      uses: actions/upload-artifact@v4
+      with:
+        name: documentation-coverage
+        path: doc-coverage.txt
+        retention-days: 30
+
+  combine-results:
+    name: Combine Quality Results
+    runs-on: ubuntu-latest
+    needs: [swiftlint, swiftformat, complexity-analysis, documentation-coverage]
+    if: always()
+    
+    steps:
+    - name: Download All Artifacts
+      uses: actions/download-artifact@v4
+      
+    - name: Create Quality Report
+      run: |
+        mkdir -p quality-report
+        
+        echo "# Code Quality Report" > quality-report/README.md
+        echo "" >> quality-report/README.md
+        echo "Generated on: $(date)" >> quality-report/README.md
+        echo "" >> quality-report/README.md
+        
+        # SwiftLint results
+        if [ -f swiftlint-results/swiftlint-results.txt ]; then
+          echo "## SwiftLint Results" >> quality-report/README.md
+          echo "\`\`\`" >> quality-report/README.md
+          cat swiftlint-results/swiftlint-results.txt >> quality-report/README.md
+          echo "\`\`\`" >> quality-report/README.md
+          echo "" >> quality-report/README.md
+        fi
+        
+        # SwiftFormat results
+        if [ -f swiftformat-results/swiftformat-results.txt ]; then
+          echo "## SwiftFormat Results" >> quality-report/README.md
+          echo "\`\`\`" >> quality-report/README.md
+          cat swiftformat-results/swiftformat-results.txt >> quality-report/README.md
+          echo "\`\`\`" >> quality-report/README.md
+          echo "" >> quality-report/README.md
+        fi
+        
+        # Complexity results
+        if [ -f complexity-results/complexity-results.txt ]; then
+          echo "## Complexity Analysis" >> quality-report/README.md
+          echo "\`\`\`" >> quality-report/README.md
+          cat complexity-results/complexity-results.txt >> quality-report/README.md
+          echo "\`\`\`" >> quality-report/README.md
+          echo "" >> quality-report/README.md
+        fi
+        
+        # Documentation coverage
+        if [ -f documentation-coverage/doc-coverage.txt ]; then
+          echo "## Documentation Coverage" >> quality-report/README.md
+          echo "\`\`\`" >> quality-report/README.md
+          cat documentation-coverage/doc-coverage.txt >> quality-report/README.md
+          echo "\`\`\`" >> quality-report/README.md
+        fi
+        
+    - name: Upload Combined Report
+      uses: actions/upload-artifact@v4
+      with:
+        name: quality-report
+        path: quality-report/
+        retention-days: 90

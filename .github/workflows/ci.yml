@@ -1,0 +1,90 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  build-and-test:
+    name: Build and Test
+    runs-on: macos-latest
+    
+    strategy:
+      matrix:
+        destination: 
+          - platform=iOS Simulator,OS=26.0,name=iPhone 15 Pro
+          - platform=macOS
+        xcode-version: ['latest-stable']
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    - name: Setup Xcode
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: ${{ matrix.xcode-version }}
+      
+    - name: Show Xcode Version
+      run: xcodebuild -version
+      
+    - name: Show Available Simulators
+      run: xcrun simctl list devices available
+      
+    - name: Clean DerivedData
+      run: rm -rf ~/Library/Developer/Xcode/DerivedData
+      
+    - name: Build Framework
+      run: |
+        xcodebuild clean build \
+          -project Rebrickable.framework.xcodeproj \
+          -scheme "Rebrickable.framework" \
+          -destination "${{ matrix.destination }}" \
+          -configuration Debug \
+          CODE_SIGN_IDENTITY="" \
+          CODE_SIGNING_REQUIRED=NO \
+          | xcpretty || exit 1
+          
+    - name: Run Tests
+      run: |
+        xcodebuild test \
+          -project Rebrickable.framework.xcodeproj \
+          -scheme "Rebrickable.framework" \
+          -destination "${{ matrix.destination }}" \
+          -configuration Debug \
+          CODE_SIGN_IDENTITY="" \
+          CODE_SIGNING_REQUIRED=NO \
+          -enableCodeCoverage YES \
+          | xcpretty || exit 1
+          
+    - name: Upload Coverage Reports
+      if: matrix.destination == 'platform=iOS Simulator,OS=26.0,name=iPhone 15 Pro'
+      uses: codecov/codecov-action@v4
+      with:
+        files: ./build/reports/coverage.xml
+        fail_ci_if_error: false
+        verbose: true
+
+  code-quality:
+    name: Code Quality
+    runs-on: macos-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    - name: Install SwiftLint
+      run: |
+        brew install swiftlint
+        
+    - name: Run SwiftLint
+      run: swiftlint lint --reporter github-actions-logging
+      
+    - name: Install SwiftFormat
+      run: |
+        brew install swiftformat
+        
+    - name: Check SwiftFormat
+      run: swiftformat --lint .
