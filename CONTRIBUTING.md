@@ -29,9 +29,7 @@ This project and everyone participating in it is governed by our Code of Conduct
 
 ### Prerequisites
 
-- **Xcode 15.4+**
-- **macOS 14.0+**
-- **Swift 5.9+**
+- **Swift 6.1.2+**
 
 ### Setup Steps
 
