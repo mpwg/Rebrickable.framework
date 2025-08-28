@@ -77,34 +77,38 @@ jobs:
         echo "TAG_NAME=$TAG_NAME" >> $GITHUB_OUTPUT
         
     - name: Create Release
-      uses: actions/create-release@v1
+      run: |
+        # Determine if this is a prerelease
+        PRERELEASE=""
+        if [[ "${{ github.ref }}" == *"alpha"* ]] || [[ "${{ github.ref }}" == *"beta"* ]] || [[ "${{ github.ref }}" == *"rc"* ]]; then
+          PRERELEASE="--prerelease"
+        fi
+        
+        # Create the release
+        gh release create ${{ steps.changelog.outputs.TAG_NAME }} \
+          --title "Release ${{ steps.changelog.outputs.TAG_NAME }}" \
+          --notes "## Changes in ${{ steps.changelog.outputs.TAG_NAME }}
+        
+        ${{ steps.changelog.outputs.CHANGELOG }}
+        
+        ## Installation
+        
+        ### Swift Package Manager
+        Add the following to your \`Package.swift\`:
+        
+        \`\`\`swift
+        dependencies: [
+            .package(url: \"https://github.com/mpwg/Rebrickable.framework.git\", from: \"${{ steps.changelog.outputs.TAG_NAME }}\")
+        ]
+        \`\`\`
+        
+        ### Xcode
+        1. Go to File > Add Package Dependencies
+        2. Enter: \`https://github.com/mpwg/Rebrickable.framework.git\`
+        3. Select version: \`${{ steps.changelog.outputs.TAG_NAME }}\`" \
+          $PRERELEASE
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ steps.changelog.outputs.TAG_NAME }}
-        body: |
-          ## Changes in ${{ steps.changelog.outputs.TAG_NAME }}
-          
-          ${{ steps.changelog.outputs.CHANGELOG }}
-          
-          ## Installation
-          
-          ### Swift Package Manager
-          Add the following to your `Package.swift`:
-          
-          ```swift
-          dependencies: [
-              .package(url: "https://github.com/mpwg/Rebrickable.framework.git", from: "${{ steps.changelog.outputs.TAG_NAME }}")
-          ]
-          ```
-          
-          ### Xcode
-          1. Go to File > Add Package Dependencies
-          2. Enter: `https://github.com/mpwg/Rebrickable.framework.git`
-          3. Select version: `${{ steps.changelog.outputs.TAG_NAME }}`
-        draft: false
-        prerelease: ${{ contains(github.ref, 'alpha') || contains(github.ref, 'beta') || contains(github.ref, 'rc') }}
 
   update-documentation:
     name: Update Documentation
