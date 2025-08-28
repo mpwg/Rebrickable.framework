@@ -59,6 +59,24 @@ import Rebrickable_framework
 let legoApi = LegoAPI(apiKey: "your-api-key-here")
 ```
 
+> **⚠️ Security Note**: Never commit API keys to source control. Use environment variables or secure configuration files that are excluded from version control.
+
+#### Recommended API Key Management
+
+For development:
+```swift
+// Use environment variables
+let apiKey = ProcessInfo.processInfo.environment["REBRICKABLE_API_KEY"] ?? ""
+let legoApi = LegoAPI(apiKey: apiKey)
+```
+
+For testing:
+```swift
+// In your test configuration
+let testApiKey = ProcessInfo.processInfo.environment["REBRICKABLE_TEST_API_KEY"] ?? "test-placeholder"
+let legoApi = LegoAPI(apiKey: testApiKey)
+```
+
 ### Fetching LEGO Data
 
 ```swift
@@ -151,13 +169,20 @@ open Rebrickable.framework.xcodeproj
 
 ### Running Tests
 
+For testing, you can optionally set an environment variable for the API key:
+
 ```bash
+# Optional: Set test API key (tests work with mock responses even without this)
+export REBRICKABLE_TEST_API_KEY="your-test-api-key"
+
 # Run all tests
 xcodebuild test -project Rebrickable.framework.xcodeproj -scheme "Rebrickable.framework"
 
 # Run specific test class
 xcodebuild test -project Rebrickable.framework.xcodeproj -scheme "Rebrickable.framework" -only-testing:Rebrickable_frameworkTests.LegoAPITests
 ```
+
+> **Note**: Tests use mocked HTTP responses, so they will work without a real API key. The test configuration automatically falls back to a safe placeholder when no environment variable is provided.
 
 ### Code Quality
 
