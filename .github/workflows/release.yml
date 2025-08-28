@@ -32,7 +32,8 @@ jobs:
           -destination "generic/platform=iOS" \
           -configuration Release \
           CODE_SIGN_IDENTITY="" \
-          CODE_SIGNING_REQUIRED=NO
+          CODE_SIGNING_REQUIRED=NO \
+          | xcpretty
           
     - name: Build Release Framework (macOS) 
       run: |
@@ -42,17 +43,19 @@ jobs:
           -destination "platform=macOS" \
           -configuration Release \
           CODE_SIGN_IDENTITY="" \
-          CODE_SIGNING_REQUIRED=NO
+          CODE_SIGNING_REQUIRED=NO \
+          | xcpretty
           
     - name: Run Tests
       run: |
         xcodebuild test \
           -project Rebrickable.framework.xcodeproj \
           -scheme "Rebrickable.framework" \
-          -destination "platform=iOS Simulator,OS=17.5,name=iPhone 15 Pro" \
+          -destination "platform=iOS Simulator,OS=26.0,name=iPhone 15 Pro" \
           -configuration Release \
           CODE_SIGN_IDENTITY="" \
-          CODE_SIGNING_REQUIRED=NO
+          CODE_SIGNING_REQUIRED=NO \
+          | xcpretty
           
     - name: Generate Changelog
       id: changelog
@@ -77,38 +80,34 @@ jobs:
         echo "TAG_NAME=$TAG_NAME" >> $GITHUB_OUTPUT
         
     - name: Create Release
-      run: |
-        # Determine if this is a prerelease
-        PRERELEASE=""
-        if [[ "${{ github.ref }}" == *"alpha"* ]] || [[ "${{ github.ref }}" == *"beta"* ]] || [[ "${{ github.ref }}" == *"rc"* ]]; then
-          PRERELEASE="--prerelease"
-        fi
-        
-        # Create the release
-        gh release create ${{ steps.changelog.outputs.TAG_NAME }} \
-          --title "Release ${{ steps.changelog.outputs.TAG_NAME }}" \
-          --notes "## Changes in ${{ steps.changelog.outputs.TAG_NAME }}
-        
-        ${{ steps.changelog.outputs.CHANGELOG }}
-        
-        ## Installation
-        
-        ### Swift Package Manager
-        Add the following to your \`Package.swift\`:
-        
-        \`\`\`swift
-        dependencies: [
-            .package(url: \"https://github.com/mpwg/Rebrickable.framework.git\", from: \"${{ steps.changelog.outputs.TAG_NAME }}\")
-        ]
-        \`\`\`
-        
-        ### Xcode
-        1. Go to File > Add Package Dependencies
-        2. Enter: \`https://github.com/mpwg/Rebrickable.framework.git\`
-        3. Select version: \`${{ steps.changelog.outputs.TAG_NAME }}\`" \
-          $PRERELEASE
+      uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ steps.changelog.outputs.TAG_NAME }}
+        body: |
+          ## Changes in ${{ steps.changelog.outputs.TAG_NAME }}
+          
+          ${{ steps.changelog.outputs.CHANGELOG }}
+          
+          ## Installation
+          
+          ### Swift Package Manager
+          Add the following to your `Package.swift`:
+          
+          ```swift
+          dependencies: [
+              .package(url: "https://github.com/mpwg/Rebrickable.framework.git", from: "${{ steps.changelog.outputs.TAG_NAME }}")
+          ]
+          ```
+          
+          ### Xcode
+          1. Go to File > Add Package Dependencies
+          2. Enter: `https://github.com/mpwg/Rebrickable.framework.git`
+          3. Select version: `${{ steps.changelog.outputs.TAG_NAME }}`
+        draft: false
+        prerelease: ${{ contains(github.ref, 'alpha') || contains(github.ref, 'beta') || contains(github.ref, 'rc') }}
 
   update-documentation:
     name: Update Documentation
@@ -129,7 +128,7 @@ jobs:
         xcodebuild docbuild \
           -project Rebrickable.framework.xcodeproj \
           -scheme "Rebrickable.framework" \
-          -destination "platform=iOS Simulator,OS=17.5,name=iPhone 15 Pro" \
+          -destination "platform=iOS Simulator,OS=26.0,name=iPhone 15 Pro" \
           -derivedDataPath ./DerivedData
           
     - name: Process Documentation Archive
