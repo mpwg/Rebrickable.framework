@@ -4,7 +4,7 @@ import Swifter
 import Combine
 
 class LegoAPITests: UnitTestCase {
-    private let legoApi = LegoAPI(apiKey: "262a544a78e1cbca7f70541ce6e6bc2c")
+    private let legoApi = LegoAPI(apiKey: TestConfig.testApiKey)
     private var bag = Set<AnyCancellable>()
 
     func testGetLegoColors() throws {
