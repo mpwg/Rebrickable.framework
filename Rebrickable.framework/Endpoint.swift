@@ -4,7 +4,7 @@ import Foundation
 ///
 /// This struct provides static methods and constants for building URLs to access
 /// various endpoints of the Rebrickable API, including colors, parts, sets, themes, and user data.
-struct Endpoint {
+enum Endpoint {
     static let scheme = "https://"
     static let rebrickableHostName = "rebrickable.com"
     static let apiLegoV3 = "/api/v3/lego"

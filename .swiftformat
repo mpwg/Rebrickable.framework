@@ -1,8 +1,5 @@
 # SwiftFormat Configuration for Rebrickable.framework
 
-# File paths to format
---include Rebrickable.framework,Rebrickable.frameworkTests
-
 # File paths to exclude from formatting
 --exclude .build,DerivedData,Carthage,Pods,.git,vendor
 
@@ -30,7 +27,7 @@
 # Rules to enable
 --enable isEmpty
 --enable redundantSelf
---enable sortedImports
+--enable sortImports
 --enable duplicateImports
 --enable unusedArguments
 --enable hoistPatternLet
@@ -55,8 +52,8 @@
 --empty void # Use Void instead of ()
 --stripunusedargs closure-only # Strip unused closure arguments only
 --acronyms ID,URL,API,HTTP,JSON,XML,PDF
---beforemarks 
---aftermarks 
+#--beforemarks 
+#--aftermarks 
 --linebreaks lf # Use LF line endings
 --elseposition same-line # Keep else on same line as }
 --guardelse same-line # Keep else on same line for guard statements

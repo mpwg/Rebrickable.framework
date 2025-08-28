@@ -10,12 +10,12 @@ extension URL {
     }
 
     func appendingQueryItem(name: String, value: Int?) -> URL {
-        guard let value = value else { return self }
+        guard let value else { return self }
         return appending(queryItem: URLQueryItem(name: name, value: "\(value)"))
     }
 
     func appendingQueryItem(name: String, value: String?) -> URL {
-        guard let value = value, !value.isEmpty else { return self }
+        guard let value, !value.isEmpty else { return self }
         return appending(queryItem: URLQueryItem(name: name, value: value))
     }
 

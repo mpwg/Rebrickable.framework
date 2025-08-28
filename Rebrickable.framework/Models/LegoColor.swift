@@ -11,7 +11,7 @@ public struct LegoColor: Codable, Hashable {
     public let name: String?
     /// Whether the color is transparent.
     public let is_trans: Bool
-    
+
     /// Initializes a new LegoColor.
     public init(id: Int, name: String?, is_trans: Bool) {
         self.id = id

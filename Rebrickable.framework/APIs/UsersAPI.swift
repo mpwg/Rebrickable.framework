@@ -1,5 +1,5 @@
-import Foundation
 import Combine
+import Foundation
 
 /// A client for accessing user-specific data from the Rebrickable API.
 ///
@@ -22,21 +22,27 @@ public final class UsersAPI {
     public func userAuthentication(username: String, password: String) {
         let httpBodyParameters = ["username": username, "password": password]
         apiManager.makeRequest(to: Endpoint.tokenUrl, httpBody: httpBodyParameters, withHttpMethod: .post)
-            .map { $0.data }
+            .map(\.data)
             .decode(type: String.self, decoder: JSONDecoder())
             .mapToLegoError()
-            .sink(receiveCompletion: { _ in },
-                  receiveValue: { self.userToken = $0 })
+            .sink(
+                receiveCompletion: { _ in },
+                receiveValue: { self.userToken = $0 }
+            )
             .store(in: &bag)
     }
 
     public func userAuthentication2(username: String, password: String) {
         let httpBodyParameters = ["username": username, "password": password]
-        let response: AnyPublisher<String, LegoError> = apiManager.request(to: Endpoint.tokenUrl, httpBody: httpBodyParameters, withHttpMethod: .post)
+        let response: AnyPublisher<String, LegoError> = apiManager.request(
+            to: Endpoint.tokenUrl,
+            httpBody: httpBodyParameters,
+            withHttpMethod: .post
+        )
         response
             .assertNoFailure()
             .receive(on: RunLoop.main)
-            .sink { [unowned self] in self.userToken = $0 }
+            .sink { [unowned self] in userToken = $0 }
             .store(in: &bag)
     }
 
