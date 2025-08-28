@@ -15,7 +15,7 @@ jobs:
     
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       
     - name: Install SwiftLint
       run: brew install swiftlint
@@ -40,7 +40,7 @@ jobs:
     
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       
     - name: Install SwiftFormat
       run: brew install swiftformat
@@ -63,10 +63,10 @@ jobs:
     
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       
     - name: Install Lizard
-      run: pip3 install lizard
+      run: brew install lizard
       
     - name: Run Complexity Analysis
       run: |
@@ -86,7 +86,7 @@ jobs:
     
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       
     - name: Setup Xcode
       uses: maxim-lobanov/setup-xcode@v1
@@ -117,7 +117,7 @@ jobs:
     
     steps:
     - name: Download All Artifacts
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       
     - name: Create Quality Report
       run: |
