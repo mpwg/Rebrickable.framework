@@ -1,13 +1,19 @@
 import Foundation
 
 public struct LegoLostPart: Hashable, Codable {
-    public let lost_part_id: Int
-    public let lost_quantity: Int
-    public let inv_part: LegoInventoryPart
+    public let lostPartId: Int
+    public let lostQuantity: Int
+    public let invPart: LegoInventoryPart
 
-    public init(lost_part_id: Int, lost_quantity: Int, inv_part: LegoInventoryPart) {
-        self.lost_part_id = lost_part_id
-        self.lost_quantity = lost_quantity
-        self.inv_part = inv_part
+    public init(lostPartId: Int, lostQuantity: Int, invPart: LegoInventoryPart) {
+        self.lostPartId = lostPartId
+        self.lostQuantity = lostQuantity
+        self.invPart = invPart
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case lostPartId = "lost_part_id"
+        case lostQuantity = "lost_quantity"
+        case invPart = "inv_part"
     }
 }

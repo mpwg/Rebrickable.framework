@@ -6,40 +6,51 @@ import Foundation
 /// including its identification, metadata, and associated resources.
 public struct LegoSet: Codable, Hashable {
     /// The unique set number identifier.
-    public let set_num: String
+    public let setNum: String
     /// The name of the set.
     public let name: String
     /// The year the set was released.
     public let year: Int?
     /// The ID of the theme this set belongs to.
-    public let theme_id: Int?
+    public let themeId: Int?
     /// The number of parts in the set.
-    public let num_parts: Int
+    public let numParts: Int
     /// URL to the set's image.
-    public let set_img_url: URL?
+    public let setImgUrl: URL?
     /// URL to the set's page on Rebrickable.
-    public let set_url: URL?
+    public let setUrl: URL?
     /// Timestamp of when the set data was last modified.
-    public let last_modified_dt: String
+    public let lastModifiedDt: String
 
     /// Initializes a new LegoSet.
     public init(
-        set_num: String,
+        setNum: String,
         name: String,
         year: Int?,
-        theme_id: Int?,
-        num_parts: Int,
-        set_img_url: URL?,
-        set_url: URL?,
-        last_modified_dt: String
+        themeId: Int?,
+        numParts: Int,
+        setImgUrl: URL?,
+        setUrl: URL?,
+        lastModifiedDt: String
     ) {
-        self.set_num = set_num
+        self.setNum = setNum
         self.name = name
         self.year = year
-        self.theme_id = theme_id
-        self.num_parts = num_parts
-        self.set_img_url = set_img_url
-        self.set_url = set_url
-        self.last_modified_dt = last_modified_dt
+        self.themeId = themeId
+        self.numParts = numParts
+        self.setImgUrl = setImgUrl
+        self.setUrl = setUrl
+        self.lastModifiedDt = lastModifiedDt
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case setNum = "set_num"
+        case name
+        case year
+        case themeId = "theme_id"
+        case numParts = "num_parts"
+        case setImgUrl = "set_img_url"
+        case setUrl = "set_url"
+        case lastModifiedDt = "last_modified_dt"
     }
 }

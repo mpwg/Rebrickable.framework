@@ -3,11 +3,17 @@ import Foundation
 public struct LegoPartCategory: Codable, Hashable {
     public let id: Int
     public let name: String
-    public let part_count: Int
+    public let partCount: Int
 
-    public init(id: Int, name: String, part_count: Int) {
+    public init(id: Int, name: String, partCount: Int) {
         self.id = id
         self.name = name
-        self.part_count = part_count
+        self.partCount = partCount
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case partCount = "part_count"
     }
 }
