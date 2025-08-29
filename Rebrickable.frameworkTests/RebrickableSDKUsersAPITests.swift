@@ -1,7 +1,7 @@
 import Combine
+@testable import Rebrickable_framework
 import Swifter
 import XCTest
-@testable import Rebrickable_framework
 
 class RebrickableSDKUsersAPITests: UnitTestCase {
     private let legoApi = LegoAPI(apiKey: TestConfig.testApiKey)
