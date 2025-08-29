@@ -22,22 +22,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		402FA4772E61F31A00347AE5 /* package */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = package; sourceTree = "<group>"; };
 		40CC590A2E60AF0E00A89781 /* Rebrickable_framework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Rebrickable_framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		40CC59152E60AF0F00A89781 /* Rebrickable.frameworkTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Rebrickable.frameworkTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		40CC590C2E60AF0E00A89781 /* Rebrickable.framework */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Rebrickable.framework;
-			sourceTree = "<group>";
-		};
-		40CC59192E60AF0F00A89781 /* Rebrickable.frameworkTests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Rebrickable.frameworkTests;
-			sourceTree = "<group>";
-		};
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		40CC59072E60AF0E00A89781 /* Frameworks */ = {
@@ -62,8 +50,7 @@
 		40CC59002E60AF0E00A89781 = {
 			isa = PBXGroup;
 			children = (
-				40CC590C2E60AF0E00A89781 /* Rebrickable.framework */,
-				40CC59192E60AF0F00A89781 /* Rebrickable.frameworkTests */,
+				402FA4772E61F31A00347AE5 /* package */,
 				40CC590B2E60AF0E00A89781 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -103,9 +90,6 @@
 			);
 			dependencies = (
 			);
-			fileSystemSynchronizedGroups = (
-				40CC590C2E60AF0E00A89781 /* Rebrickable.framework */,
-			);
 			name = Rebrickable.framework;
 			packageProductDependencies = (
 			);
@@ -125,9 +109,6 @@
 			);
 			dependencies = (
 				40CC59182E60AF0F00A89781 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				40CC59192E60AF0F00A89781 /* Rebrickable.frameworkTests */,
 			);
 			name = Rebrickable.frameworkTests;
 			packageProductDependencies = (
