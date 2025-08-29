@@ -11,7 +11,7 @@ on:
 jobs:
   codeql:
     name: CodeQL Analysis
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     timeout-minutes: 360
     permissions:
       actions: read
@@ -35,7 +35,7 @@ jobs:
           languages: ${{ matrix.language }}
           queries: security-extended,security-and-quality
 
-      - name: Setup Swift
+      - name: Setup swift
         uses: swift-actions/setup-swift@v2
 
       - name: Build for CodeQL
@@ -48,7 +48,7 @@ jobs:
 
   dependency-review:
     name: Dependency Review
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     if: github.event_name == 'pull_request'
 
     steps:
@@ -63,7 +63,7 @@ jobs:
 
   secret-scanning:
     name: Secret Scanning
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     permissions:
       # required for all workflows
       security-events: write

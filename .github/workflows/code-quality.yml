@@ -11,7 +11,7 @@ on:
 jobs:
   swiftlint:
     name: SwiftLint
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
 
     steps:
       - name: Checkout
@@ -37,14 +37,14 @@ jobs:
 
   swiftformat:
     name: SwiftFormat
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v5
 
       - name: Install SwiftFormat
-        run: sudo apt-get install swiftformat
+        run: brew install swiftformat
 
       - name: Check SwiftFormat
         run: |
@@ -60,14 +60,14 @@ jobs:
 
   complexity-analysis:
     name: Complexity Analysis
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v5
 
       - name: Install Lizard
-        run: sudo apt-get install lizard
+        run: brew install lizard
 
       - name: Run Complexity Analysis
         run: |
@@ -83,7 +83,7 @@ jobs:
 
   combine-results:
     name: Combine Quality Results
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     needs: [swiftlint, swiftformat, complexity-analysis]
     if: always()
 
