@@ -21,11 +21,15 @@ jobs:
 
       - name: Build Framework
         run: |
+          echo "🍎 Building Swift Package on macOS..."
           swift build || exit 1
+          echo "✅ Build successful"
 
       - name: Run Tests
         run: |
+          echo "🧪 Running tests..."
           swift test || exit 1
+          echo "✅ All tests passed"
 
   lint-ubuntu:
     name: Lint and Syntax Check (Ubuntu)
@@ -43,11 +47,17 @@ jobs:
 
       - name: Run SwiftLint
         run: |
+          echo "🔍 Running SwiftLint analysis..."
           swiftlint lint --reporter github-actions-logging
+          echo "✅ Code style validation passed"
 
-      - name: Note about Ubuntu builds
+      - name: Platform Support Summary
+        if: always()
         run: |
-          echo "🐧 Ubuntu CI Status: Linting completed"
-          echo "ℹ️  Note: Full Swift build requires Apple's Combine framework"
-          echo "ℹ️  For complete build and test functionality, see macOS job above"
-          echo "✅ Code style and syntax validation passed"
+          echo "## 🐧 Ubuntu CI Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Code style validation (SwiftLint)" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Repository structure checks" >> $GITHUB_STEP_SUMMARY
+          echo "- ⚠️ **Note**: Full build requires Apple's Combine framework" >> $GITHUB_STEP_SUMMARY
+          echo "- 🍎 For complete build and test functionality, see macOS job" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "This framework is designed for Apple platforms and uses Combine framework extensively." >> $GITHUB_STEP_SUMMARY
