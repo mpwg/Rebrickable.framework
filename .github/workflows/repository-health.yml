@@ -2,230 +2,230 @@ name: Repository Health
 
 on:
   schedule:
-    - cron: '0 6 * * 1'  # Weekly on Monday at 6 AM
+    - cron: "0 6 * * 1" # Weekly on Monday at 6 AM
   workflow_dispatch:
 
 jobs:
   health-check:
     name: Repository Health Check
-    runs-on: ubuntu-latest
-    
+    runs-on: macos-latest
+
     steps:
-    - name: Checkout
-      uses: actions/checkout@v5
-      with:
-        fetch-depth: 0
-        
-    - name: Check Repository Structure
-      run: |
-        echo "# Repository Health Report" > health-report.md
-        echo "" >> health-report.md
-        echo "**Generated:** $(date)" >> health-report.md
-        echo "" >> health-report.md
-        
-        # Check required files
-        echo "## Required Files Check" >> health-report.md
-        echo "" >> health-report.md
-        
-        required_files=(
-          "README.md"
-          "LICENSE"
-          "CONTRIBUTING.md"
-          "CHANGELOG.md"
-          ".gitignore"
-          ".swiftlint.yml"
-          ".swiftformat"
-          ".github/workflows/ci.yml"
-          ".github/workflows/release.yml"
-          ".github/workflows/security.yml"
-          ".github/dependabot.yml"
-          ".github/pull_request_template.md"
-        )
-        
-        all_present=true
-        for file in "${required_files[@]}"; do
-          if [ -f "$file" ]; then
-            echo "✅ $file" >> health-report.md
-          else
-            echo "❌ $file (missing)" >> health-report.md
-            all_present=false
-          fi
-        done
-        
-        echo "" >> health-report.md
-        if [ "$all_present" = true ]; then
-          echo "**Status:** All required files are present." >> health-report.md
-        else
-          echo "**Status:** Some required files are missing." >> health-report.md
-        fi
-        echo "" >> health-report.md
-        
-    - name: Check Documentation
-      run: |
-        echo "## Documentation Check" >> health-report.md
-        echo "" >> health-report.md
-        
-        # Check README content
-        if grep -q "Installation" README.md; then
-          echo "✅ README contains installation instructions" >> health-report.md
-        else
-          echo "❌ README missing installation instructions" >> health-report.md
-        fi
-        
-        if grep -q "Usage" README.md; then
-          echo "✅ README contains usage examples" >> health-report.md
-        else
-          echo "❌ README missing usage examples" >> health-report.md
-        fi
-        
-        # Check for inline documentation
-        swift_files_count=$(find . -name "*.swift" -not -path "./.*" | wc -l)
-        documented_files=$(grep -r "///" --include="*.swift" . | cut -d: -f1 | sort -u | wc -l)
-        
-        echo "📊 Swift files: $swift_files_count" >> health-report.md
-        echo "📊 Files with documentation: $documented_files" >> health-report.md
-        
-        if [ $documented_files -gt $((swift_files_count / 2)) ]; then
-          echo "✅ Good documentation coverage" >> health-report.md
-        else
-          echo "⚠️ Low documentation coverage" >> health-report.md
-        fi
-        echo "" >> health-report.md
-        
-    - name: Check Git History
-      run: |
-        echo "## Git History Analysis" >> health-report.md
-        echo "" >> health-report.md
-        
-        # Recent activity
-        commits_last_week=$(git log --since="1 week ago" --oneline | wc -l)
-        commits_last_month=$(git log --since="1 month ago" --oneline | wc -l)
-        
-        echo "📊 Commits in last week: $commits_last_week" >> health-report.md
-        echo "📊 Commits in last month: $commits_last_month" >> health-report.md
-        
-        # Contributors
-        contributors=$(git log --format='%an' | sort -u | wc -l)
-        echo "📊 Total contributors: $contributors" >> health-report.md
-        
-        # Branch health
-        current_branch=$(git branch --show-current)
-        behind_count=$(git rev-list --count HEAD..origin/main 2>/dev/null || echo "0")
-        
-        if [ "$behind_count" -eq 0 ]; then
-          echo "✅ Current branch is up to date" >> health-report.md
-        else
-          echo "⚠️ Current branch is $behind_count commits behind main" >> health-report.md
-        fi
-        echo "" >> health-report.md
-        
-    - name: Check Dependencies
-      run: |
-        echo "## Dependencies Analysis" >> health-report.md
-        echo "" >> health-report.md
-        
-        # Check for Package.swift (SPM)
-        if [ -f "Package.swift" ]; then
-          echo "✅ Swift Package Manager configuration found" >> health-report.md
-        else
-          echo "ℹ️ No Package.swift found (Xcode project only)" >> health-report.md
-        fi
-        
-        # Check dependabot configuration
-        if [ -f ".github/dependabot.yml" ]; then
-          echo "✅ Dependabot configuration present" >> health-report.md
-          ecosystems=$(grep "package-ecosystem" .github/dependabot.yml | wc -l)
-          echo "📊 Monitored ecosystems: $ecosystems" >> health-report.md
-        else
-          echo "❌ No dependabot configuration" >> health-report.md
-        fi
-        echo "" >> health-report.md
-        
-    - name: Check Security
-      run: |
-        echo "## Security Check" >> health-report.md
-        echo "" >> health-report.md
-        
-        # Check for security workflows
-        if [ -f ".github/workflows/security.yml" ]; then
-          echo "✅ Security workflow present" >> health-report.md
-        else
-          echo "❌ No security workflow found" >> health-report.md
-        fi
-        
-        # Check for sensitive files in git
-        sensitive_patterns=(
-          "*.key"
-          "*.pem"
-          "*.p12"
-          "*.keystore"
-          "*secret*"
-          "*password*"
-          "*token*"
-        )
-        
-        sensitive_found=false
-        for pattern in "${sensitive_patterns[@]}"; do
-          if git ls-files | grep -i "$pattern" > /dev/null 2>&1; then
-            echo "⚠️ Potential sensitive file found: $pattern" >> health-report.md
-            sensitive_found=true
-          fi
-        done
-        
-        if [ "$sensitive_found" = false ]; then
-          echo "✅ No obvious sensitive files in repository" >> health-report.md
-        fi
-        echo "" >> health-report.md
-        
-    - name: Generate Overall Score
-      run: |
-        echo "## Overall Health Score" >> health-report.md
-        echo "" >> health-report.md
-        
-        # Count checkmarks and X marks
-        checkmarks=$(grep -c "✅" health-report.md || echo "0")
-        warnings=$(grep -c "⚠️" health-report.md || echo "0")
-        errors=$(grep -c "❌" health-report.md || echo "0")
-        
-        total_checks=$((checkmarks + warnings + errors))
-        
-        if [ $total_checks -gt 0 ]; then
-          score=$(( (checkmarks * 100) / total_checks ))
-          echo "**Score:** $score/100" >> health-report.md
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Check Repository Structure
+        run: |
+          echo "# Repository Health Report" > health-report.md
           echo "" >> health-report.md
-          echo "- ✅ Passed: $checkmarks" >> health-report.md
-          echo "- ⚠️ Warnings: $warnings" >> health-report.md
-          echo "- ❌ Failed: $errors" >> health-report.md
+          echo "**Generated:** $(date)" >> health-report.md
           echo "" >> health-report.md
-          
-          if [ $score -ge 90 ]; then
-            echo "🎉 **Excellent repository health!**" >> health-report.md
-          elif [ $score -ge 75 ]; then
-            echo "👍 **Good repository health**" >> health-report.md
-          elif [ $score -ge 60 ]; then
-            echo "⚠️ **Repository health needs improvement**" >> health-report.md
+
+          # Check required files
+          echo "## Required Files Check" >> health-report.md
+          echo "" >> health-report.md
+
+          required_files=(
+            "README.md"
+            "LICENSE"
+            "CONTRIBUTING.md"
+            "CHANGELOG.md"
+            ".gitignore"
+            ".swiftlint.yml"
+            ".swiftformat"
+            ".github/workflows/ci.yml"
+            ".github/workflows/release.yml"
+            ".github/workflows/security.yml"
+            ".github/dependabot.yml"
+            ".github/pull_request_template.md"
+          )
+
+          all_present=true
+          for file in "${required_files[@]}"; do
+            if [ -f "$file" ]; then
+              echo "✅ $file" >> health-report.md
+            else
+              echo "❌ $file (missing)" >> health-report.md
+              all_present=false
+            fi
+          done
+
+          echo "" >> health-report.md
+          if [ "$all_present" = true ]; then
+            echo "**Status:** All required files are present." >> health-report.md
           else
-            echo "🚨 **Poor repository health - immediate attention needed**" >> health-report.md
+            echo "**Status:** Some required files are missing." >> health-report.md
           fi
-        fi
-        
-    - name: Upload Health Report
-      uses: actions/upload-artifact@v4
-      with:
-        name: repository-health-report
-        path: health-report.md
-        retention-days: 90
-        
-    - name: Create Issue if Health is Poor
-      if: always()
-      run: |
-        # Check if health score is below threshold
-        if grep -q "Poor repository health" health-report.md; then
-          echo "HEALTH_ISSUE=true" >> $GITHUB_ENV
-        else
-          echo "HEALTH_ISSUE=false" >> $GITHUB_ENV
-        fi
-        
+          echo "" >> health-report.md
+
+      - name: Check Documentation
+        run: |
+          echo "## Documentation Check" >> health-report.md
+          echo "" >> health-report.md
+
+          # Check README content
+          if grep -q "Installation" README.md; then
+            echo "✅ README contains installation instructions" >> health-report.md
+          else
+            echo "❌ README missing installation instructions" >> health-report.md
+          fi
+
+          if grep -q "Usage" README.md; then
+            echo "✅ README contains usage examples" >> health-report.md
+          else
+            echo "❌ README missing usage examples" >> health-report.md
+          fi
+
+          # Check for inline documentation
+          swift_files_count=$(find . -name "*.swift" -not -path "./.*" | wc -l)
+          documented_files=$(grep -r "///" --include="*.swift" . | cut -d: -f1 | sort -u | wc -l)
+
+          echo "📊 Swift files: $swift_files_count" >> health-report.md
+          echo "📊 Files with documentation: $documented_files" >> health-report.md
+
+          if [ $documented_files -gt $((swift_files_count / 2)) ]; then
+            echo "✅ Good documentation coverage" >> health-report.md
+          else
+            echo "⚠️ Low documentation coverage" >> health-report.md
+          fi
+          echo "" >> health-report.md
+
+      - name: Check Git History
+        run: |
+          echo "## Git History Analysis" >> health-report.md
+          echo "" >> health-report.md
+
+          # Recent activity
+          commits_last_week=$(git log --since="1 week ago" --oneline | wc -l)
+          commits_last_month=$(git log --since="1 month ago" --oneline | wc -l)
+
+          echo "📊 Commits in last week: $commits_last_week" >> health-report.md
+          echo "📊 Commits in last month: $commits_last_month" >> health-report.md
+
+          # Contributors
+          contributors=$(git log --format='%an' | sort -u | wc -l)
+          echo "📊 Total contributors: $contributors" >> health-report.md
+
+          # Branch health
+          current_branch=$(git branch --show-current)
+          behind_count=$(git rev-list --count HEAD..origin/main 2>/dev/null || echo "0")
+
+          if [ "$behind_count" -eq 0 ]; then
+            echo "✅ Current branch is up to date" >> health-report.md
+          else
+            echo "⚠️ Current branch is $behind_count commits behind main" >> health-report.md
+          fi
+          echo "" >> health-report.md
+
+      - name: Check Dependencies
+        run: |
+          echo "## Dependencies Analysis" >> health-report.md
+          echo "" >> health-report.md
+
+          # Check for Package.swift (SPM)
+          if [ -f "Package.swift" ]; then
+            echo "✅ Swift Package Manager configuration found" >> health-report.md
+          else
+            echo "ℹ️ No Package.swift found (Xcode project only)" >> health-report.md
+          fi
+
+          # Check dependabot configuration
+          if [ -f ".github/dependabot.yml" ]; then
+            echo "✅ Dependabot configuration present" >> health-report.md
+            ecosystems=$(grep "package-ecosystem" .github/dependabot.yml | wc -l)
+            echo "📊 Monitored ecosystems: $ecosystems" >> health-report.md
+          else
+            echo "❌ No dependabot configuration" >> health-report.md
+          fi
+          echo "" >> health-report.md
+
+      - name: Check Security
+        run: |
+          echo "## Security Check" >> health-report.md
+          echo "" >> health-report.md
+
+          # Check for security workflows
+          if [ -f ".github/workflows/security.yml" ]; then
+            echo "✅ Security workflow present" >> health-report.md
+          else
+            echo "❌ No security workflow found" >> health-report.md
+          fi
+
+          # Check for sensitive files in git
+          sensitive_patterns=(
+            "*.key"
+            "*.pem"
+            "*.p12"
+            "*.keystore"
+            "*secret*"
+            "*password*"
+            "*token*"
+          )
+
+          sensitive_found=false
+          for pattern in "${sensitive_patterns[@]}"; do
+            if git ls-files | grep -i "$pattern" > /dev/null 2>&1; then
+              echo "⚠️ Potential sensitive file found: $pattern" >> health-report.md
+              sensitive_found=true
+            fi
+          done
+
+          if [ "$sensitive_found" = false ]; then
+            echo "✅ No obvious sensitive files in repository" >> health-report.md
+          fi
+          echo "" >> health-report.md
+
+      - name: Generate Overall Score
+        run: |
+          echo "## Overall Health Score" >> health-report.md
+          echo "" >> health-report.md
+
+          # Count checkmarks and X marks
+          checkmarks=$(grep -c "✅" health-report.md || echo "0")
+          warnings=$(grep -c "⚠️" health-report.md || echo "0")
+          errors=$(grep -c "❌" health-report.md || echo "0")
+
+          total_checks=$((checkmarks + warnings + errors))
+
+          if [ $total_checks -gt 0 ]; then
+            score=$(( (checkmarks * 100) / total_checks ))
+            echo "**Score:** $score/100" >> health-report.md
+            echo "" >> health-report.md
+            echo "- ✅ Passed: $checkmarks" >> health-report.md
+            echo "- ⚠️ Warnings: $warnings" >> health-report.md
+            echo "- ❌ Failed: $errors" >> health-report.md
+            echo "" >> health-report.md
+            
+            if [ $score -ge 90 ]; then
+              echo "🎉 **Excellent repository health!**" >> health-report.md
+            elif [ $score -ge 75 ]; then
+              echo "👍 **Good repository health**" >> health-report.md
+            elif [ $score -ge 60 ]; then
+              echo "⚠️ **Repository health needs improvement**" >> health-report.md
+            else
+              echo "🚨 **Poor repository health - immediate attention needed**" >> health-report.md
+            fi
+          fi
+
+      - name: Upload Health Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: repository-health-report
+          path: health-report.md
+          retention-days: 90
+
+      - name: Create Issue if Health is Poor
+        if: always()
+        run: |
+          # Check if health score is below threshold
+          if grep -q "Poor repository health" health-report.md; then
+            echo "HEALTH_ISSUE=true" >> $GITHUB_ENV
+          else
+            echo "HEALTH_ISSUE=false" >> $GITHUB_ENV
+          fi
+
     # Note: This would require a GitHub token with issues write permission
     # - name: Create Health Issue
     #   if: env.HEALTH_ISSUE == 'true'
@@ -234,7 +234,7 @@ jobs:
     #     script: |
     #       const fs = require('fs');
     #       const report = fs.readFileSync('health-report.md', 'utf8');
-    #       
+    #
     #       await github.rest.issues.create({
     #         owner: context.repo.owner,
     #         repo: context.repo.repo,
