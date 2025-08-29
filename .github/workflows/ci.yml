@@ -7,17 +7,8 @@ on:
     branches: [main, develop]
 
 jobs:
-  default:
-    runs-on: macos-latest
-    defaults:
-      run:
-        working-directory: ./../
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v5
-
-  build-and-test:
-    name: Build and Test
+  build-macos:
+    name: Build and Test (macOS)
     runs-on: macos-latest
     steps:
       - name: Checkout
@@ -25,10 +16,37 @@ jobs:
 
       - name: Setup Swift
         uses: swift-actions/setup-swift@v2
+        with:
+          swift-version: '6.1.0'
+
       - name: Build Framework
+        working-directory: package
         run: |
           swift build || exit 1
 
       - name: Run Tests
+        working-directory: package
+        run: |
+          swift test || exit 1
+
+  build-ubuntu:
+    name: Build and Test (Ubuntu)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Swift
+        uses: swift-actions/setup-swift@v2
+        with:
+          swift-version: '6.1.0'
+
+      - name: Build Framework
+        working-directory: package
+        run: |
+          swift build || exit 1
+
+      - name: Run Tests
+        working-directory: package
         run: |
           swift test || exit 1
