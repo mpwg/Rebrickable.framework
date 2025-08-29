@@ -5,7 +5,7 @@
 //  Created by Matthias Wallner-Géhri on 28.08.25.
 //
 
-@testable import Rebrickable_framework
+@testable import Rebrickable_package
 import Testing
 
 struct RebrickableFrameworkTests {

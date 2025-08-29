@@ -1,5 +1,5 @@
 import Foundation
-import Swifter
+@preconcurrency import Swifter
 import XCTest
 
 public class UTHttpServerBuilder {
@@ -22,9 +22,10 @@ public class UTHttpServerBuilder {
         return self
     }
 
-    public func onUnexpected(_ asserts: @escaping (HttpRequest) -> Void) -> UTHttpServerBuilder {
+    public func onUnexpected(_ asserts: @MainActor @escaping (HttpRequest) -> Void) -> UTHttpServerBuilder {
         httpServer.notFoundHandler = { request in
-            DispatchQueue.main.sync {
+            // Hop to the main actor before invoking the non-Sendable closure with a non-Sendable request.
+            Task { @MainActor in
                 asserts(request)
             }
             return HttpResponse.badRequest(HttpResponseBody.html(""))
