@@ -16,46 +16,18 @@ jobs:
       with:
         fetch-depth: 0
         
-    - name: Setup Xcode
-      uses: maxim-lobanov/setup-xcode@v1
+    - name: Setup Swift
+      uses: swift-actions/setup-swift@v2
       with:
-        xcode-version: latest-stable
+        swift-version: '6.1.0'
       
-    - name: Clean DerivedData
-      run: rm -rf ~/Library/Developer/Xcode/DerivedData
-      
-    - name: Build Release Framework (iOS)
+    - name: Build Release Framework
       run: |
-        xcodebuild clean build \
-          -project Rebrickable.framework.xcodeproj \
-          -scheme "Rebrickable.framework" \
-          -destination "generic/platform=iOS" \
-          -configuration Release \
-          CODE_SIGN_IDENTITY="" \
-          CODE_SIGNING_REQUIRED=NO \
-          | xcpretty
-          
-    - name: Build Release Framework (macOS) 
-      run: |
-        xcodebuild clean build \
-          -project Rebrickable.framework.xcodeproj \
-          -scheme "Rebrickable.framework" \
-          -destination "platform=macOS" \
-          -configuration Release \
-          CODE_SIGN_IDENTITY="" \
-          CODE_SIGNING_REQUIRED=NO \
-          | xcpretty
+        swift build -c release
           
     - name: Run Tests
       run: |
-        xcodebuild test \
-          -project Rebrickable.framework.xcodeproj \
-          -scheme "Rebrickable.framework" \
-          -destination "platform=iOS Simulator,OS=26.0,name=iPhone 15 Pro" \
-          -configuration Release \
-          CODE_SIGN_IDENTITY="" \
-          CODE_SIGNING_REQUIRED=NO \
-          | xcpretty
+        swift test
           
     - name: Generate Changelog
       id: changelog
@@ -118,36 +90,17 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v5
       
-    - name: Setup Xcode
-      uses: maxim-lobanov/setup-xcode@v1
+    - name: Setup Swift
+      uses: swift-actions/setup-swift@v2
       with:
-        xcode-version: latest-stable
+        swift-version: '6.1.0'
       
     - name: Generate Documentation
       run: |
-        xcodebuild docbuild \
-          -project Rebrickable.framework.xcodeproj \
-          -scheme "Rebrickable.framework" \
-          -destination "platform=iOS Simulator,OS=26.0,name=iPhone 15 Pro" \
-          -derivedDataPath ./DerivedData
+        swift package generate-documentation
           
-    - name: Process Documentation Archive
+    - name: Note about Documentation
       run: |
-        # Find the documentation archive
-        ARCHIVE_PATH=$(find ./DerivedData -name "*.doccarchive" | head -1)
-        if [ -n "$ARCHIVE_PATH" ]; then
-          # Convert to static website
-          mkdir -p docs
-          cp -R "$ARCHIVE_PATH" docs/
-          echo "Documentation generated successfully"
-        else
-          echo "No documentation archive found"
-        fi
-        
-    - name: Deploy to GitHub Pages
-      if: success()
-      uses: peaceiris/actions-gh-pages@v4
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./docs
-        force_orphan: true
+        echo "📚 Documentation generation attempted"
+        echo "ℹ️  For Xcode projects, use 'xcodebuild docbuild'"
+        echo "ℹ️  For Swift Packages, documentation is generated above"

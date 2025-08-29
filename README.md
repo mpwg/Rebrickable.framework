@@ -19,9 +19,11 @@
 
 ## 📋 Requirements
 
-- iOS 26.0+ / macOS 26.0+ / visionOS 26.0+
-- Xcode 26.0+
-- Swift 6.2+
+- iOS 17.0+ / macOS 14.0+ / visionOS 1.0+ / tvOS 17.0+ / watchOS 10.0+
+- Xcode 15.0+
+- Swift 6.1+
+
+**Platform Note**: This framework uses Apple's Combine framework and is designed for Apple platforms. Linux/Ubuntu support is limited to syntax validation in CI.
 
 ## 📦 Installation
 
@@ -162,8 +164,8 @@ cd Rebrickable.framework
 # Install development tools
 brew install swiftlint swiftformat
 
-# Open in Xcode
-open Rebrickable.framework.xcodeproj
+# Open in Xcode (Swift Package)
+open Package.swift
 ```
 
 ### Running Tests
@@ -174,11 +176,11 @@ For testing, you can optionally set an environment variable for the API key:
 # Optional: Set test API key (tests work with mock responses even without this)
 export REBRICKABLE_TEST_API_KEY="your-test-api-key"
 
-# Run all tests
-xcodebuild test -project Rebrickable.framework.xcodeproj -scheme "Rebrickable.framework"
+# Run all tests (Swift Package Manager)
+swift test
 
-# Run specific test class
-xcodebuild test -project Rebrickable.framework.xcodeproj -scheme "Rebrickable.framework" -only-testing:Rebrickable_frameworkTests.LegoAPITests
+# Run tests with specific patterns
+swift test --filter "LegoAPITests"
 ```
 
 > **Note**: Tests use mocked HTTP responses, so they will work without a real API key. The test configuration automatically falls back to a safe placeholder when no environment variable is provided.

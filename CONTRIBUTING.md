@@ -41,7 +41,7 @@ This project and everyone participating in it is governed by our Code of Conduct
 
 2. **Open in Xcode:**
    ```bash
-   open Rebrickable.framework.xcodeproj
+   open Package.swift
    ```
 
 3. **Install development tools:**
@@ -51,7 +51,7 @@ This project and everyone participating in it is governed by our Code of Conduct
 
 4. **Run initial build and tests:**
    ```bash
-   xcodebuild build test -project Rebrickable.framework.xcodeproj -scheme "Rebrickable.framework"
+   swift build && swift test
    ```
 
 ## Making Changes
@@ -113,7 +113,7 @@ Examples:
    swiftlint
    
    # Build and test
-   xcodebuild build test -project Rebrickable.framework.xcodeproj -scheme "Rebrickable.framework"
+   swift build && swift test
    ```
 
 3. **Create a pull request** with:
@@ -186,10 +186,10 @@ XCTAssertEqual(result, expectedResult)
 
 ```bash
 # Run all tests
-xcodebuild test -project Rebrickable.framework.xcodeproj -scheme "Rebrickable.framework"
+swift test
 
 # Run specific test class
-xcodebuild test -project Rebrickable.framework.xcodeproj -scheme "Rebrickable.framework" -only-testing:Rebrickable_frameworkTests.LegoAPITests
+swift test --filter "LegoAPITests"
 ```
 
 ### Coverage
