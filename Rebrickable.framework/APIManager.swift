@@ -27,8 +27,7 @@ final class APIManager {
         httpBody parameters: [String: String] = [:],
         withHttpMethod httpMethod: HttpMethod
     )
-        -> URLSession.DataTaskPublisher
-    {
+        -> URLSession.DataTaskPublisher {
         let urlRequest = prepareRequest(with: url, parameters: parameters, httpMethod: httpMethod)
         return URLSession.shared.dataTaskPublisher(for: urlRequest)
     }
@@ -84,8 +83,7 @@ extension APIManager {
         httpBody parameters: [String: String] = [:],
         withHttpMethod httpMethod: HttpMethod
     )
-        -> AnyPublisher<T, LegoError>
-    {
+        -> AnyPublisher<T, LegoError> {
         makeRequest(to: url, httpBody: parameters, withHttpMethod: httpMethod)
             .map(\.data)
             .decode(type: T.self, decoder: JSONDecoder())

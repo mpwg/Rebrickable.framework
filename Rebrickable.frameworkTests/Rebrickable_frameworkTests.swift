@@ -5,8 +5,8 @@
 //  Created by Matthias Wallner-Géhri on 28.08.25.
 //
 
-import Testing
 @testable import Rebrickable_framework
+import Testing
 
 struct RebrickableFrameworkTests {
     @Test
