@@ -17,14 +17,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
-      - name: Install SwiftLint
-        run: sudo apt-get install swiftlint
+      - name: SwiftLint with text results
+        uses: sinoru/actions-swiftlint@v6
+        with:
+          swiftlint-args: --reporter github-actions-logging > swiftlint-results.txt
 
-      - name: Run SwiftLint
-        run: |
-          swiftlint lint --reporter github-actions-logging > swiftlint-results.txt || true
-          swiftlint lint --reporter json > swiftlint-results.json || true
-
+      - name: SwiftLint with JSON result
+        uses: sinoru/actions-swiftlint@v6
+        with:
+          swiftlint-args: --reporter json > swiftlint-results.json
       - name: Upload SwiftLint Results
         uses: actions/upload-artifact@v4
         with:
