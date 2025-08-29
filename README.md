@@ -22,7 +22,7 @@
 
 - iOS 26.0+ / macOS 26.0+ / visionOS 26.0+
 - Xcode 26.0+
-- Swift 5.2+
+- Swift 6.2+
 
 ## 📦 Installation
 
