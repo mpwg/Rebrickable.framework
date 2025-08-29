@@ -10,8 +10,7 @@ public class UTHttpServerBuilder {
         _ endpoint: String,
         _ completion: @escaping (HttpRequest, Int) -> (HttpResponse)
     )
-        -> UTHttpServerBuilder
-    {
+        -> UTHttpServerBuilder {
         let lock = DispatchSemaphore(value: 1)
         var callCount = 0
         httpServer.self[endpoint] = { request in
@@ -35,12 +34,11 @@ public class UTHttpServerBuilder {
 
     @discardableResult
     public func buildAndStart(
-        port: in_port_t = 8080,
+        port: in_port_t = 8_080,
         forceIPv4: Bool = false,
         priority: DispatchQoS.QoSClass = .userInteractive
     ) throws
-        -> HttpServer
-    {
+        -> HttpServer {
         for route in httpRoutes {
             buildRoute(endpoint: route.enpoint, completion: route.completion)
         }

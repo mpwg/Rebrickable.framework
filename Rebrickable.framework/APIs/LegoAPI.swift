@@ -43,8 +43,7 @@ public final class LegoAPI {
         page: Int? = nil,
         pageSize: Int? = nil
     )
-        -> AnyPublisher<[LegoSet], LegoError>
-    {
+        -> AnyPublisher<[LegoSet], LegoError> {
         apiManager.getResults(with: Endpoint.minifigs(
             inSetNum: inSetNum,
             inThemeId: inThemeId,
@@ -62,8 +61,7 @@ public final class LegoAPI {
         page: Int? = nil,
         pageSize: Int? = nil
     )
-        -> AnyPublisher<[LegoInventoryPart], LegoError>
-    {
+        -> AnyPublisher<[LegoInventoryPart], LegoError> {
         apiManager.getResults(with: Endpoint.minifigParts(figNum: figNum, page: page, pageSize: pageSize))
     }
 
@@ -75,8 +73,7 @@ public final class LegoAPI {
         page: Int? = nil,
         pageSize: Int? = nil
     )
-        -> AnyPublisher<[LegoPartCategory], LegoError>
-    {
+        -> AnyPublisher<[LegoPartCategory], LegoError> {
         apiManager.getResults(with: Endpoint.partCategories(page: page, pageSize: pageSize))
     }
 
@@ -97,8 +94,7 @@ public final class LegoAPI {
         page: Int? = nil,
         pageSize: Int? = nil
     )
-        -> AnyPublisher<[LegoPartColor], LegoError>
-    {
+        -> AnyPublisher<[LegoPartColor], LegoError> {
         apiManager.getResults(with: Endpoint.partColors(partNum: partNum, page: page, pageSize: pageSize))
     }
 
@@ -108,8 +104,7 @@ public final class LegoAPI {
         page: Int? = nil,
         pageSize: Int? = nil
     )
-        -> AnyPublisher<[LegoSet], LegoError>
-    {
+        -> AnyPublisher<[LegoSet], LegoError> {
         apiManager.getResults(with: Endpoint.set(partNum: partNum, colorId: colorID, page: page, pageSize: pageSize))
     }
 
@@ -118,8 +113,7 @@ public final class LegoAPI {
         page: Int? = nil,
         pageSize: Int? = nil
     )
-        -> AnyPublisher<[LegoSet], LegoError>
-    {
+        -> AnyPublisher<[LegoSet], LegoError> {
         apiManager.getResults(with: Endpoint.sets(themeId: themeId, page: page, pageSize: pageSize))
     }
 
@@ -132,8 +126,7 @@ public final class LegoAPI {
         page: Int? = nil,
         pageSize: Int? = nil
     )
-        -> AnyPublisher<[LegoInventorySet], LegoError>
-    {
+        -> AnyPublisher<[LegoInventorySet], LegoError> {
         apiManager.getResults(with: Endpoint.inventoryMinifigs(setNum: setNum, page: page, pageSize: pageSize))
     }
 
@@ -142,8 +135,7 @@ public final class LegoAPI {
         page: Int? = nil,
         pageSize: Int? = nil
     )
-        -> AnyPublisher<[LegoInventoryPart], LegoError>
-    {
+        -> AnyPublisher<[LegoInventoryPart], LegoError> {
         apiManager.getResults(with: Endpoint.inventoryParts(setNum: setNum, page: page, pageSize: pageSize))
     }
 
