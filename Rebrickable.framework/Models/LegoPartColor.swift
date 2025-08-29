@@ -1,17 +1,25 @@
 import Foundation
 
 public struct LegoPartColor: Codable, Hashable {
-    public let color_id: Int
-    public let color_name: String
-    public let num_sets: Int
-    public let num_set_parts: Int
-    public let part_img_url: URL?
+    public let colorId: Int
+    public let colorName: String
+    public let numSets: Int
+    public let numSetParts: Int
+    public let partImgUrl: URL?
 
-    public init(color_id: Int, color_name: String, num_sets: Int, num_set_parts: Int, part_img_url: URL?) {
-        self.color_id = color_id
-        self.color_name = color_name
-        self.num_sets = num_sets
-        self.num_set_parts = num_set_parts
-        self.part_img_url = part_img_url
+    public init(colorId: Int, colorName: String, numSets: Int, numSetParts: Int, partImgUrl: URL?) {
+        self.colorId = colorId
+        self.colorName = colorName
+        self.numSets = numSets
+        self.numSetParts = numSetParts
+        self.partImgUrl = partImgUrl
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case colorId = "color_id"
+        case colorName = "color_name"
+        case numSets = "num_sets"
+        case numSetParts = "num_set_parts"
+        case partImgUrl = "part_img_url"
     }
 }

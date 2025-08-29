@@ -2,16 +2,24 @@ import Foundation
 
 public struct LegoInventorySet: Hashable, Codable {
     public let id: Int
-    public let set_num: String
-    public let set_name: String
+    public let setNum: String
+    public let setName: String
     public let quantity: Int
-    public let set_img_url: URL?
+    public let setImgUrl: URL?
 
-    public init(id: Int, set_num: String, set_name: String, quantity: Int, set_img_url: URL?) {
+    public init(id: Int, setNum: String, setName: String, quantity: Int, setImgUrl: URL?) {
         self.id = id
-        self.set_num = set_num
-        self.set_name = set_name
+        self.setNum = setNum
+        self.setName = setName
         self.quantity = quantity
-        self.set_img_url = set_img_url
+        self.setImgUrl = setImgUrl
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case id
+        case setNum = "set_num"
+        case setName = "set_name"
+        case quantity
+        case setImgUrl = "set_img_url"
     }
 }

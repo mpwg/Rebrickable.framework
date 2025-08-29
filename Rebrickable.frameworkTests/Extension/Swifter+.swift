@@ -9,7 +9,9 @@ extension Swifter.HttpResponse {
             let encodedDate = ISO8601DateFormatter().string(from: date)
             try container.encode(encodedDate)
         }
-        let data = try! encoder.encode(value)
+        guard let data = try? encoder.encode(value) else {
+            return HttpResponse.internalServerError
+        }
         return HttpResponse.ok(HttpResponseBody.data(data))
     }
 
@@ -20,9 +22,11 @@ extension Swifter.HttpResponse {
             let encodedDate = ISO8601DateFormatter().string(from: date)
             try container.encode(encodedDate)
         }
-        let data = try! encoder.encode(value)
+        guard let data = try? encoder.encode(value) else {
+            return HttpResponse.internalServerError
+        }
         return HttpResponse.raw(statusCode, "", nil) { writer in
-            try writer.write(data)
+            try? writer.write(data)
         }
     }
 }
