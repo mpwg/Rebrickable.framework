@@ -1,5 +1,5 @@
 import Combine
-@testable import Rebrickable_framework
+@testable import Rebrickable_package
 import Swifter
 import XCTest
 
@@ -7,7 +7,7 @@ class LegoAPITests: UnitTestCase {
     private let legoApi = LegoAPI(apiKey: TestConfig.testApiKey)
     private var bag = Set<AnyCancellable>()
 
-    func testGetLegoColors() throws {
+    @MainActor func testGetLegoColors() throws {
         try getTest(
             mock: [LegoColor.mock()],
             endpoint: Endpoint.colors,
@@ -15,7 +15,7 @@ class LegoAPITests: UnitTestCase {
         )
     }
 
-    func testGetLegoColorWithId() throws {
+    @MainActor func testGetLegoColorWithId() throws {
         try getTest(
             mock: LegoColor.mock(),
             endpoint: Endpoint.colors,
@@ -23,7 +23,7 @@ class LegoAPITests: UnitTestCase {
         )
     }
 
-    func testGetLegoElement() throws {
+    @MainActor func  testGetLegoElement() throws {
         try getTest(
             mock: LegoElement.mock(),
             endpoint: Endpoint.elements,
@@ -31,7 +31,7 @@ class LegoAPITests: UnitTestCase {
         )
     }
 
-    func testGetLegoMinifigures() throws {
+    @MainActor func  testGetLegoMinifigures() throws {
         try getTest(
             mock: [LegoSet.mock()],
             endpoint: Endpoint.minifigs,
@@ -39,7 +39,7 @@ class LegoAPITests: UnitTestCase {
         )
     }
 
-    func testGetLegoMinifigureWithSetNum() throws {
+    @MainActor func  testGetLegoMinifigureWithSetNum() throws {
         try getTest(
             mock: LegoSet.mock(),
             endpoint: Endpoint.minifigs,
@@ -47,7 +47,7 @@ class LegoAPITests: UnitTestCase {
         )
     }
 
-    func testGetLegoMinifigureParts() throws {
+    @MainActor func  testGetLegoMinifigureParts() throws {
         try getTest(
             mock: [LegoInventoryPart.mock()],
             endpoint: Endpoint.parts,
@@ -55,7 +55,7 @@ class LegoAPITests: UnitTestCase {
         )
     }
 
-    func testGetLegoMinifigureSets() throws {
+    @MainActor func  testGetLegoMinifigureSets() throws {
         try getTest(
             mock: [LegoSet.mock()],
             endpoint: Endpoint.sets,
@@ -63,7 +63,7 @@ class LegoAPITests: UnitTestCase {
         )
     }
 
-    func testGetLegoPartCategories() throws {
+    @MainActor func  testGetLegoPartCategories() throws {
         try getTest(
             mock: [LegoPartCategory.mock()],
             endpoint: Endpoint.elements,
@@ -71,7 +71,7 @@ class LegoAPITests: UnitTestCase {
         )
     }
 
-    func testGetLegoPartCategoriesWithId() throws {
+    @MainActor func  testGetLegoPartCategoriesWithId() throws {
         try getTest(
             mock: LegoPartCategory.mock(),
             endpoint: Endpoint.elements,
@@ -79,7 +79,7 @@ class LegoAPITests: UnitTestCase {
         )
     }
 
-    func testGetLegoParts() throws {
+    @MainActor func  testGetLegoParts() throws {
         try getTest(
             mock: [LegoPart.mock()],
             endpoint: Endpoint.parts,
@@ -87,7 +87,7 @@ class LegoAPITests: UnitTestCase {
         )
     }
 
-    func testGetLegoPartWithId() throws {
+    @MainActor func  testGetLegoPartWithId() throws {
         try getTest(
             mock: LegoPart.mock(),
             endpoint: Endpoint.parts,
@@ -95,7 +95,7 @@ class LegoAPITests: UnitTestCase {
         )
     }
 
-    func testGetLegoPartColorsWithPartNum() throws {
+    @MainActor func  testGetLegoPartColorsWithPartNum() throws {
         try getTest(
             mock: [LegoPartColor.mock()],
             endpoint: Endpoint.colors,
@@ -103,7 +103,7 @@ class LegoAPITests: UnitTestCase {
         )
     }
 
-    func testGetLegoPartsWitPartAndColor() throws {
+    @MainActor func  testGetLegoPartsWitPartAndColor() throws {
         try getTest(
             mock: [LegoSet.mock()],
             endpoint: Endpoint.sets,
@@ -111,7 +111,7 @@ class LegoAPITests: UnitTestCase {
         )
     }
 
-    func testGetLegoSets() throws {
+    @MainActor func  testGetLegoSets() throws {
         try getTest(
             mock: [LegoSet.mock()],
             endpoint: Endpoint.sets,
@@ -119,7 +119,7 @@ class LegoAPITests: UnitTestCase {
         )
     }
 
-    func testGetLegoSet() throws {
+    @MainActor func  testGetLegoSet() throws {
         try getTest(
             mock: LegoSet.mock(),
             endpoint: Endpoint.sets,
@@ -127,7 +127,7 @@ class LegoAPITests: UnitTestCase {
         )
     }
 
-    func testGetLegoInventoryMinifigsWithSetNum() throws {
+    @MainActor func  testGetLegoInventoryMinifigsWithSetNum() throws {
         try getTest(
             mock: [LegoInventorySet.mock()],
             endpoint: Endpoint.minifigs,
@@ -135,7 +135,7 @@ class LegoAPITests: UnitTestCase {
         )
     }
 
-    func testGetLegoInventoryPartsWithSetNum() throws {
+    @MainActor func  testGetLegoInventoryPartsWithSetNum() throws {
         try getTest(
             mock: [LegoInventoryPart.mock()],
             endpoint: Endpoint.parts,
@@ -143,7 +143,7 @@ class LegoAPITests: UnitTestCase {
         )
     }
 
-    func testGetLegoThemes() throws {
+    @MainActor func  testGetLegoThemes() throws {
         try getTest(
             mock: [LegoTheme.mock()],
             endpoint: Endpoint.themes,
@@ -151,7 +151,7 @@ class LegoAPITests: UnitTestCase {
         )
     }
 
-    func testGetLegoThemeWithId() throws {
+    @MainActor func  testGetLegoThemeWithId() throws {
         try getTest(
             mock: LegoTheme.mock(),
             endpoint: Endpoint.themes,
@@ -161,7 +161,7 @@ class LegoAPITests: UnitTestCase {
 }
 
 extension LegoAPITests {
-    func getTest<T: Codable>(mock: T, endpoint: String, publisher: AnyPublisher<T, LegoError>) throws {
+    @MainActor func getTest<T: Codable>(mock: T, endpoint: String, publisher: AnyPublisher<T, LegoError>) throws {
         let exp1 = expectation(description: "receiveCompletion")
         let exp2 = expectation(description: "receiveValue")
 

@@ -1,5 +1,5 @@
 import Combine
-@testable import Rebrickable_framework
+@testable import Rebrickable_package
 import Swifter
 import XCTest
 
