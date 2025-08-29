@@ -40,11 +40,6 @@ jobs:
         with:
           xcode-version: latest
 
-      - name: Setup Swift
-        uses: swift-actions/setup-swift@v2
-        with:
-          swift-version: "6.2" # Specify the Swift version you want to use
-
       - name: Build for CodeQL
         run: |
           swift build || exit 1
