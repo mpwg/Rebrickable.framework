@@ -2,7 +2,6 @@
 
 [![CI](https://github.com/mpwg/Rebrickable.framework/actions/workflows/ci.yml/badge.svg)](https://github.com/mpwg/Rebrickable.framework/actions/workflows/ci.yml)
 [![Security](https://github.com/mpwg/Rebrickable.framework/actions/workflows/security.yml/badge.svg)](https://github.com/mpwg/Rebrickable.framework/actions/workflows/security.yml)
-[![Documentation](https://github.com/mpwg/Rebrickable.framework/actions/workflows/documentation.yml/badge.svg)](https://github.com/mpwg/Rebrickable.framework/actions/workflows/documentation.yml)
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 [![Swift 6.1.2](https://img.shields.io/badge/Swift-6.1.2-orange.svg)](https://swift.org)
 [![Platform](https://img.shields.io/badge/platform-iOS%20%7C%20macOS-lightgrey.svg)](https://developer.apple.com)
