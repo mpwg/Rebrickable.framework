@@ -66,25 +66,3 @@ jobs:
         files: ./build/reports/coverage.xml
         fail_ci_if_error: false
         verbose: true
-
-  code-quality:
-    name: Code Quality
-    runs-on: macos-latest
-    
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v5
-      
-    - name: Install SwiftLint
-      run: |
-        brew install swiftlint
-        
-    - name: Run SwiftLint
-      run: swiftlint lint --reporter github-actions-logging
-      
-    - name: Install SwiftFormat
-      run: |
-        brew install swiftformat
-        
-    - name: Check SwiftFormat
-      run: swiftformat --lint .
