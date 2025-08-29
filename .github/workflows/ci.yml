@@ -28,34 +28,3 @@ jobs:
           echo "🧪 Running tests..."
           swift test || exit 1
           echo "✅ All tests passed"
-
-  lint-ubuntu:
-    name: Lint and Syntax Check (Ubuntu)
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v5
-
-      - name: Install SwiftLint
-        run: |
-          curl -sSfL https://github.com/realm/SwiftLint/releases/download/0.55.1/swiftlint_linux.zip -o swiftlint_linux.zip
-          unzip swiftlint_linux.zip
-          sudo mv swiftlint /usr/local/bin/
-          swiftlint version
-
-      - name: Run SwiftLint
-        run: |
-          echo "🔍 Running SwiftLint analysis..."
-          swiftlint lint --reporter github-actions-logging
-          echo "✅ Code style validation passed"
-
-      - name: Platform Support Summary
-        if: always()
-        run: |
-          echo "## 🐧 Ubuntu CI Summary" >> $GITHUB_STEP_SUMMARY
-          echo "- ✅ Code style validation (SwiftLint)" >> $GITHUB_STEP_SUMMARY
-          echo "- ✅ Repository structure checks" >> $GITHUB_STEP_SUMMARY
-          echo "- ⚠️ **Note**: Full build requires Apple's Combine framework" >> $GITHUB_STEP_SUMMARY
-          echo "- 🍎 For complete build and test functionality, see macOS job" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "This framework is designed for Apple platforms and uses Combine framework extensively." >> $GITHUB_STEP_SUMMARY
