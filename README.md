@@ -20,9 +20,9 @@
 
 ## 📋 Requirements
 
-- iOS 26.0+ / macOS 26.0+ / xrOS 26.0+
-- Xcode 16.0+
-- Swift 5.9+
+- iOS 26.0+ / macOS 26.0+ / visionOS 26.0+
+- Xcode 26.0+
+- Swift 5.2+
 
 ## 📦 Installation
 
@@ -149,8 +149,8 @@ legoApi.getSetDetails(with: "invalid-set")
 
 ### Prerequisites
 
-- Xcode 16.0+
-- macOS 14.0+
+- Xcode 26.0+
+- macOS 26.0+
 - SwiftLint and SwiftFormat (installed via Homebrew)
 
 ### Setup
