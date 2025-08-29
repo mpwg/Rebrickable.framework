@@ -7,17 +7,8 @@ on:
     branches: [main, develop]
 
 jobs:
-  default:
-    runs-on: macos-latest
-    defaults:
-      run:
-        working-directory: ./../
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v5
-
-  build-and-test:
-    name: Build and Test
+  build-macos:
+    name: Build and Test (macOS)
     runs-on: macos-latest
     steps:
       - name: Checkout
@@ -25,10 +16,15 @@ jobs:
 
       - name: Setup Swift
         uses: swift-actions/setup-swift@v2
+
       - name: Build Framework
         run: |
+          echo "🍎 Building Swift Package on macOS..."
           swift build || exit 1
+          echo "✅ Build successful"
 
       - name: Run Tests
         run: |
+          echo "🧪 Running tests..."
           swift test || exit 1
+          echo "✅ All tests passed"

@@ -19,7 +19,7 @@ jobs:
       security-events: write
     defaults:
       run:
-        working-directory: ./packages/
+        working-directory: ./
     strategy:
       fail-fast: false
       matrix:
