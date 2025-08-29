@@ -2,7 +2,7 @@ import Swifter
 import XCTest
 
 class UnitTestCase: XCTestCase {
-    var httpServerBuilder: UTHttpServerBuilder! = UTHttpServerBuilder()
+    var httpServerBuilder = UTHttpServerBuilder()
 
     override func setUp() {
         super.setUp()

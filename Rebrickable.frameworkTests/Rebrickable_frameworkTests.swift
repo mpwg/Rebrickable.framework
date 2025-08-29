@@ -8,8 +8,9 @@
 import Testing
 @testable import Rebrickable_framework
 
-struct Rebrickable_frameworkTests {
-    @Test func example() async throws {
+struct RebrickableFrameworkTests {
+    @Test
+    func example() async throws {
         // Write your test here and use APIs like `#expect(...)` to check expected conditions.
     }
 }

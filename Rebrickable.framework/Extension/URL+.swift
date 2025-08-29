@@ -6,7 +6,10 @@ extension URL {
         var queryItems = components?.queryItems ?? []
         queryItems.append(queryItem)
         components?.queryItems = queryItems
-        return components?.url ?? self
+        if let url = components?.url {
+            return url
+        }
+        return self
     }
 
     func appendingQueryItem(name: String, value: Int?) -> URL {

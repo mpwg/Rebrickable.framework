@@ -26,8 +26,8 @@ class RebrickableSDKUsersAPITests: UnitTestCase {
             // THEN
             .print()
             .sink(
-                receiveCompletion: { print($0) },
-                receiveValue: { print($0) }
+                receiveCompletion: { _ = $0 },
+                receiveValue: { _ = $0 }
             )
     }
 }

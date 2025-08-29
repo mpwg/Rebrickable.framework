@@ -9,7 +9,19 @@ enum Endpoint {
     static let rebrickableHostName = "rebrickable.com"
     static let apiLegoV3 = "/api/v3/lego"
     static let base = scheme + rebrickableHostName + apiLegoV3
-    static let baseUrl = URL(string: base)!
+    static let baseUrl: URL = {
+        if let url = URL(string: base) {
+            return url
+        }
+        var components = URLComponents()
+        components.scheme = "https"
+        components.host = rebrickableHostName
+        components.path = apiLegoV3
+        guard let url = components.url else {
+            fatalError("Invalid base URL for Endpoint")
+        }
+        return url
+    }()
 
     static let colors = "colors"
     static let elements = "elements"

@@ -10,12 +10,18 @@ public struct LegoColor: Codable, Hashable {
     /// The name of the color.
     public let name: String?
     /// Whether the color is transparent.
-    public let is_trans: Bool
+    public let isTrans: Bool
 
     /// Initializes a new LegoColor.
-    public init(id: Int, name: String?, is_trans: Bool) {
+    public init(id: Int, name: String?, isTrans: Bool) {
         self.id = id
         self.name = name
-        self.is_trans = is_trans
+        self.isTrans = isTrans
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case isTrans = "is_trans"
     }
 }

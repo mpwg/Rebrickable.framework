@@ -15,7 +15,7 @@ extension Bool {
 
 extension URL {
     static func mock(string: String = String.mock()) -> URL {
-        URL(string: string)!
+    return URL(string: string) ?? URL(fileURLWithPath: "/dev/null")
     }
 }
 
@@ -30,7 +30,7 @@ extension LegoColor {
         LegoColor(
             id: Int.mock(),
             name: String.mock(),
-            is_trans: Bool.mock()
+            isTrans: Bool.mock()
         )
     }
 }
@@ -40,10 +40,10 @@ extension LegoElement {
         LegoElement(
             part: LegoPart.mock(),
             color: LegoColor.mock(),
-            element_id: String.mock(),
-            design_id: String.mock(),
-            element_img_url: URL.mock(),
-            part_img_url: URL.mock()
+            elementId: String.mock(),
+            designId: String.mock(),
+            elementImgUrl: URL.mock(),
+            partImgUrl: URL.mock()
         )
     }
 }
@@ -51,14 +51,14 @@ extension LegoElement {
 extension LegoSet {
     static func mock() -> LegoSet {
         LegoSet(
-            set_num: String.mock(),
+            setNum: String.mock(),
             name: String.mock(),
             year: Int.mock(),
-            theme_id: Int.mock(),
-            num_parts: Int.mock(),
-            set_img_url: URL.mock(),
-            set_url: URL.mock(),
-            last_modified_dt: String.mock()
+            themeId: Int.mock(),
+            numParts: Int.mock(),
+            setImgUrl: URL.mock(),
+            setUrl: URL.mock(),
+            lastModifiedDt: String.mock()
         )
     }
 }
@@ -68,7 +68,7 @@ extension LegoPartCategory {
         LegoPartCategory(
             id: Int.mock(),
             name: String.mock(),
-            part_count: Int.mock()
+            partCount: Int.mock()
         )
     }
 }
@@ -76,13 +76,13 @@ extension LegoPartCategory {
 extension LegoPart {
     static func mock() -> LegoPart {
         LegoPart(
-            part_num: String.mock(),
+            partNum: String.mock(),
             name: String.mock(),
-            part_cat_id: Int.mock(),
-            part_url: URL.mock(),
-            part_img_url: URL.mock(),
-            external_ids: [:],
-            print_of: String.mock()
+            partCatId: Int.mock(),
+            partUrl: URL.mock(),
+            partImgUrl: URL.mock(),
+            externalIds: [:],
+            printOf: String.mock()
         )
     }
 }
@@ -90,11 +90,11 @@ extension LegoPart {
 extension LegoPartColor {
     static func mock() -> LegoPartColor {
         LegoPartColor(
-            color_id: Int.mock(),
-            color_name: String.mock(),
-            num_sets: Int.mock(),
-            num_set_parts: Int.mock(),
-            part_img_url: URL.mock()
+            colorId: Int.mock(),
+            colorName: String.mock(),
+            numSets: Int.mock(),
+            numSetParts: Int.mock(),
+            partImgUrl: URL.mock()
         )
     }
 }
@@ -103,14 +103,14 @@ extension LegoInventoryPart {
     static func mock() -> LegoInventoryPart {
         LegoInventoryPart(
             id: Int.mock(),
-            inv_part_id: Int.mock(),
+            invPartId: Int.mock(),
             part: LegoPart.mock(),
             color: LegoColor.mock(),
-            set_num: String.mock(),
+            setNum: String.mock(),
             quantity: Int.mock(),
-            is_spare: Bool.mock(),
-            element_id: String.mock(),
-            num_sets: Int.mock()
+            isSpare: Bool.mock(),
+            elementId: String.mock(),
+            numSets: Int.mock()
         )
     }
 }
@@ -119,10 +119,10 @@ extension LegoInventorySet {
     static func mock() -> LegoInventorySet {
         LegoInventorySet(
             id: Int.mock(),
-            set_num: String.mock(),
-            set_name: String.mock(),
+            setNum: String.mock(),
+            setName: String.mock(),
             quantity: Int.mock(),
-            set_img_url: URL.mock()
+            setImgUrl: URL.mock()
         )
     }
 }
@@ -131,7 +131,7 @@ extension LegoTheme {
     static func mock() -> LegoTheme {
         LegoTheme(
             id: Int.mock(),
-            parent_id: Int.mock(),
+            parentId: Int.mock(),
             name: String.mock()
         )
     }
