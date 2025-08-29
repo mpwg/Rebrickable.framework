@@ -11,7 +11,7 @@ on:
 jobs:
   swiftlint:
     name: SwiftLint
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
 
     steps:
       - name: Checkout
@@ -60,7 +60,7 @@ jobs:
 
   complexity-analysis:
     name: Complexity Analysis
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
 
     steps:
       - name: Checkout
@@ -83,7 +83,7 @@ jobs:
 
   combine-results:
     name: Combine Quality Results
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     needs: [swiftlint, swiftformat, complexity-analysis]
     if: always()
 
