@@ -15,10 +15,6 @@ let package = Package(
             targets: ["Rebrickable.package"]
         ),
     ],
-    dependencies: [
-        // Swifter is used in tests
-        .package(url: "https://github.com/httpswift/swifter.git", from: "1.5.0")
-    ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
@@ -29,7 +25,6 @@ let package = Package(
             name: "Rebrickable.packageTests",
             dependencies: [
                 "Rebrickable.package",
-                .product(name: "Swifter", package: "swifter")
             ]
         ),
     ]
